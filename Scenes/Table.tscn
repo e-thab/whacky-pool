@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Sprites/table.png" type="Texture" id=3]
+
+[node name="Table" type="RigidBody2D"]
+mass = 20.0
+gravity_scale = 0.0
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.125, 0.125 )
+texture = ExtResource( 3 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+position = Vector2( -512, -300 )
+polygon = PoolVector2Array( 127, 121, 136, 96, 159, 84, 199, 84, 198, 132, 180, 117, 160, 136, 175, 154, 175, 446, 161, 463, 180, 483, 197, 468, 491, 468, 495, 472, 496, 487, 528, 487, 529, 472, 533, 468, 826, 468, 846, 484, 864, 464, 849, 446, 849, 154, 867, 133, 848, 114, 827, 132, 533, 132, 529, 128, 528, 115, 496, 115, 495, 128, 491, 132, 198, 132, 199, 84, 866, 84, 887, 96, 897, 118, 897, 462, 891, 500, 861, 516, 168, 516, 139, 508, 127, 480 )
