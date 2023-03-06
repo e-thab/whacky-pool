@@ -1,31 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/Table.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Sprites/cue ball.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Rack.tscn" type="PackedScene" id=3]
 
 [sub_resource type="PhysicsMaterial" id=2]
 bounce = 0.5
 
-[sub_resource type="CircleShape2D" id=1]
-
 [node name="Main" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 5, 5 )
+
 [node name="Table" parent="." instance=ExtResource( 1 )]
-position = Vector2( 502, 252 )
 physics_material_override = SubResource( 2 )
 
-[node name="TestBall" type="RigidBody2D" parent="."]
-position = Vector2( 320, 282 )
-mass = 100.0
-gravity_scale = 0.0
-linear_velocity = Vector2( 0, 40 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="TestBall"]
-scale = Vector2( 0.234483, 0.234483 )
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TestBall"]
-shape = SubResource( 1 )
+[node name="Rack" parent="." instance=ExtResource( 3 )]
+position = Vector2( 720, 0 )
