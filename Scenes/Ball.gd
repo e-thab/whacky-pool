@@ -22,7 +22,6 @@ func _process(delta):
 func shoot():
 	var dist = -(get_global_mouse_position() - global_position)
 	apply_central_impulse(dist * 10)
-	print(dist)
 	shooting = false
 	$Line.visible = false
 
