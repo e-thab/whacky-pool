@@ -25,13 +25,13 @@ __meta__ = {
 [node name="Ball1" parent="." instance=ExtResource( 1 )]
 position = Vector2( -198, 0 )
 
-[node name="Sprite" parent="Ball1" index="0"]
+[node name="Sprite" parent="Ball1" index="1"]
 texture = ExtResource( 4 )
 
 [node name="Ball2" parent="." instance=ExtResource( 1 )]
 position = Vector2( -123.52, -43 )
 
-[node name="Sprite" parent="Ball2" index="0"]
+[node name="Sprite" parent="Ball2" index="1"]
 texture = ExtResource( 5 )
 
 [node name="Ball3" parent="." instance=ExtResource( 1 )]
@@ -40,73 +40,73 @@ position = Vector2( -123.52, 43 )
 [node name="Ball4" parent="." instance=ExtResource( 1 )]
 position = Vector2( -49.04, -86 )
 
-[node name="Sprite" parent="Ball4" index="0"]
+[node name="Sprite" parent="Ball4" index="1"]
 texture = ExtResource( 6 )
 
 [node name="Ball5" parent="." instance=ExtResource( 1 )]
 position = Vector2( -49.04, 0 )
 
-[node name="Sprite" parent="Ball5" index="0"]
+[node name="Sprite" parent="Ball5" index="1"]
 texture = ExtResource( 11 )
 
 [node name="Ball6" parent="." instance=ExtResource( 1 )]
 position = Vector2( -49.04, 86 )
 
-[node name="Sprite" parent="Ball6" index="0"]
+[node name="Sprite" parent="Ball6" index="1"]
 texture = ExtResource( 7 )
 
 [node name="Ball7" parent="." instance=ExtResource( 1 )]
 position = Vector2( 25.43, -129 )
 
-[node name="Sprite" parent="Ball7" index="0"]
+[node name="Sprite" parent="Ball7" index="1"]
 texture = ExtResource( 10 )
 
 [node name="Ball8" parent="." instance=ExtResource( 1 )]
 position = Vector2( 25.43, -43 )
 
-[node name="Sprite" parent="Ball8" index="0"]
+[node name="Sprite" parent="Ball8" index="1"]
 texture = ExtResource( 8 )
 
 [node name="Ball9" parent="." instance=ExtResource( 1 )]
 position = Vector2( 25.43, 43 )
 
-[node name="Sprite" parent="Ball9" index="0"]
+[node name="Sprite" parent="Ball9" index="1"]
 texture = ExtResource( 12 )
 
 [node name="Ball10" parent="." instance=ExtResource( 1 )]
 position = Vector2( 25.43, 129 )
 
-[node name="Sprite" parent="Ball10" index="0"]
+[node name="Sprite" parent="Ball10" index="1"]
 texture = ExtResource( 13 )
 
 [node name="Ball11" parent="." instance=ExtResource( 1 )]
 position = Vector2( 99.91, -172 )
 
-[node name="Sprite" parent="Ball11" index="0"]
+[node name="Sprite" parent="Ball11" index="1"]
 texture = ExtResource( 15 )
 
 [node name="Ball12" parent="." instance=ExtResource( 1 )]
 position = Vector2( 99.91, -86 )
 
-[node name="Sprite" parent="Ball12" index="0"]
+[node name="Sprite" parent="Ball12" index="1"]
 texture = ExtResource( 9 )
 
 [node name="Ball13" parent="." instance=ExtResource( 1 )]
 position = Vector2( 99.91, 0 )
 
-[node name="Sprite" parent="Ball13" index="0"]
+[node name="Sprite" parent="Ball13" index="1"]
 texture = ExtResource( 14 )
 
 [node name="Ball14" parent="." instance=ExtResource( 1 )]
 position = Vector2( 99.91, 86 )
 
-[node name="Sprite" parent="Ball14" index="0"]
+[node name="Sprite" parent="Ball14" index="1"]
 texture = ExtResource( 3 )
 
 [node name="Ball15" parent="." instance=ExtResource( 1 )]
 position = Vector2( 99.91, 172 )
 
-[node name="Sprite" parent="Ball15" index="0"]
+[node name="Sprite" parent="Ball15" index="1"]
 texture = ExtResource( 2 )
 
 [editable path="Ball1"]
