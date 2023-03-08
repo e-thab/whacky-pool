@@ -3,6 +3,7 @@ extends RigidBody2D
 
 # Declare member variables here. Examples:
 var shooting = false
+var sinking = false
 var multiplier = 1.0
 
 
@@ -18,6 +19,15 @@ func _process(delta):
 			position_line()
 		else:
 			shoot()
+
+
+func _physics_process(delta):
+	if sinking:
+		rotation_degrees += delta * 500
+		scale -= Vector2(delta, delta)
+	
+	if scale.x <= 0.01:
+		queue_free()
 
 
 func shoot():
@@ -50,6 +60,11 @@ func position_line():
 	else:
 		$Line.self_modulate = Color.red
 		multiplier = 1.5
+
+
+func sink():
+	$CollisionShape2D.set_deferred("disabled", true)
+	sinking = true
 
 
 func _on_Ball_mouse_entered():

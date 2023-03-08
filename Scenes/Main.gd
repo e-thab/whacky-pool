@@ -19,7 +19,7 @@ var POS_SPEED = 4
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$Table.connect("pocket", self, "pocket_here")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,6 +42,10 @@ func _physics_process(delta):
 		$Camera2D.position = current_pos
 
 
+func pocket_here():
+	print('sink')
+
+
 func set_zoom(n):
 	$Camera2D.zoom.x = n
 	$Camera2D.zoom.y = n
@@ -49,8 +53,6 @@ func set_zoom(n):
 
 
 func reset_zoom():
-	#$Camera2D.transform = $Table.transform
-	#$Camera2D.rotation = $Table.rotation
 	target_rot = $Table.rotation_degrees
 	target_pos = $Table.position
 	target_zoom = 5
@@ -91,5 +93,5 @@ func _on_Area2D_body_entered(body):
 
 func _on_Table_sleeping_state_changed():
 	if $Table.sleeping:
-		print('sleep')
+		#print('sleep')
 		reset_zoom()
