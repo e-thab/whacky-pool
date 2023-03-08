@@ -6,7 +6,7 @@
 
 [sub_resource type="PhysicsMaterial" id=4]
 rough = true
-bounce = 0.9
+bounce = 0.6
 
 [sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
@@ -41,7 +41,7 @@ __meta__ = {
 
 [node name="Highlight" type="Sprite" parent="."]
 visible = false
-self_modulate = Color( 1, 0.384314, 0.658824, 1 )
+self_modulate = Color( 0.701961, 1, 0.917647, 1 )
 material = SubResource( 3 )
 scale = Vector2( 1.125, 1.125 )
 texture = ExtResource( 3 )
@@ -54,6 +54,7 @@ texture = ExtResource( 1 )
 visible = false
 z_index = 10
 points = PoolVector2Array( 0, 0, 287, -236 )
+default_color = Color( 1, 1, 1, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -0.25 )

@@ -3,6 +3,7 @@ extends RigidBody2D
 
 # Declare member variables here. Examples:
 var shooting = false
+var multiplier = 1.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,7 +22,7 @@ func _process(delta):
 
 func shoot():
 	var dist = -(get_global_mouse_position() - global_position)
-	apply_central_impulse(dist * 10)
+	apply_central_impulse(dist * 12 * multiplier)
 	shooting = false
 	$Line.visible = false
 
@@ -29,6 +30,26 @@ func shoot():
 func position_line():
 	var pos = get_local_mouse_position()
 	$Line.set_point_position(1, pos)
+	
+	if pos.length() < 40:
+		$Line.self_modulate = Color.black
+		multiplier = 0
+		
+	elif pos.length() < 300:
+		$Line.self_modulate = Color.green
+		multiplier = 0.85
+		
+	elif pos.length() < 600:
+		$Line.self_modulate = Color.yellow
+		multiplier = 1.0
+		
+	elif pos.length() < 900:
+		$Line.self_modulate = Color.orange
+		multiplier = 1.15
+		
+	else:
+		$Line.self_modulate = Color.red
+		multiplier = 1.5
 
 
 func _on_Ball_mouse_entered():

@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Table.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Rack.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Ball.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Sprites/cue ball.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 2560, 1 )
@@ -22,28 +24,29 @@ bounce = 0.5
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+rotating = true
+current = true
+zoom = Vector2( 5, 5 )
+
+[node name="Area2D" type="Area2D" parent="Camera2D"]
 input_pickable = false
 
-[node name="CollisionTop" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionTop" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( 0, -1500 )
 shape = SubResource( 3 )
 
-[node name="CollisionBottom" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionBottom" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( 0, 1500 )
 shape = SubResource( 4 )
 
-[node name="CollisionLeft" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionLeft" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( -2560, 0 )
 shape = SubResource( 5 )
 
-[node name="CollisionRight" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionRight" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( 2560, 0 )
 shape = SubResource( 6 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 5, 5 )
 
 [node name="Table" parent="." instance=ExtResource( 1 )]
 physics_material_override = SubResource( 2 )
@@ -51,4 +54,13 @@ physics_material_override = SubResource( 2 )
 [node name="Rack" parent="." instance=ExtResource( 3 )]
 position = Vector2( 720, 0 )
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[node name="Ball" parent="." instance=ExtResource( 4 )]
+position = Vector2( -588, 0 )
+
+[node name="Sprite" parent="Ball" index="1"]
+texture = ExtResource( 5 )
+
+[connection signal="body_entered" from="Camera2D/Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="sleeping_state_changed" from="Table" to="." method="_on_Table_sleeping_state_changed"]
+
+[editable path="Ball"]

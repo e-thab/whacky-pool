@@ -2,8 +2,19 @@ extends Node2D
 
 
 # Declare member variables here. Examples:
-var zoom_duration = 0.0
-#var target = Vector2.ZERO
+#var zoom_duration = 0.0
+var current_zoom = 5
+var target_zoom = 5
+
+var current_rot = 0
+var target_rot = 0
+
+var current_pos = Vector2.ZERO
+var target_pos = Vector2.ZERO
+
+var ZOOM_SPEED = 2
+var ROT_SPEED = 3
+var POS_SPEED = 4
 
 
 # Called when the node enters the scene tree for the first time.
@@ -13,23 +24,36 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if $Area2D.overlaps_body($Table):
-		var start = $Camera2D.zoom.x
-		var target = start + 0.1
-		var result = lerp(start, target, 0.2)
-		zoom_duration += delta
-		
-		$Camera2D.zoom = Vector2(result, result) 
-		position_camera_colliders()
-		
-	elif zoom_duration > 0:
-		zoom_duration = max(zoom_duration - delta, 0)  # need deceleration lerp here
-		#print($Camera2D.zoom)
+	if $Camera2D/Area2D.overlaps_body($Table):
+		target_zoom += 0.05
 
 
-func zoom(n):
-	$Camera2D.zoom.x += n
-	$Camera2D.zoom.y += n
+func _physics_process(delta):
+	if current_zoom != target_zoom:
+		current_zoom = lerp(current_zoom, target_zoom, ZOOM_SPEED * delta)
+		set_zoom(current_zoom)
+	
+	if current_rot != target_rot:
+		current_rot = lerp(current_rot, target_rot, ROT_SPEED * delta)
+		$Camera2D.rotation_degrees = current_rot
+	
+	if current_pos != target_pos:
+		current_pos = lerp(current_pos, target_pos, POS_SPEED * delta)
+		$Camera2D.position = current_pos
+
+
+func set_zoom(n):
+	$Camera2D.zoom.x = n
+	$Camera2D.zoom.y = n
+	position_camera_colliders()
+
+
+func reset_zoom():
+	#$Camera2D.transform = $Table.transform
+	#$Camera2D.rotation = $Table.rotation
+	target_rot = $Table.rotation_degrees
+	target_pos = $Table.position
+	target_zoom = 5
 	position_camera_colliders()
 
 
@@ -40,17 +64,17 @@ func position_camera_colliders():
 	var h_extent = WIN_WIDTH/2 * $Camera2D.zoom.x  #width top/bottom collision rectangles should be
 	var v_extent = WIN_HEIGHT/2 * $Camera2D.zoom.y  #height side collision rectangles should have
 	
-	$Area2D/CollisionTop.shape.set("extents", Vector2(h_extent, 1))  # setting collider extents
-	$Area2D/CollisionTop.position = Vector2(0, -v_extent)  # setting collider position
+	$Camera2D/Area2D/CollisionTop.shape.set("extents", Vector2(h_extent, 1))  # setting collider extents
+	$Camera2D/Area2D/CollisionTop.position = Vector2(0, -v_extent)  # setting collider position
 	
-	$Area2D/CollisionBottom.shape.set("extents", Vector2(h_extent, 1))
-	$Area2D/CollisionBottom.position = Vector2(0, v_extent)
+	$Camera2D/Area2D/CollisionBottom.shape.set("extents", Vector2(h_extent, 1))
+	$Camera2D/Area2D/CollisionBottom.position = Vector2(0, v_extent)
 	
-	$Area2D/CollisionLeft.shape.set("extents", Vector2(1, v_extent))
-	$Area2D/CollisionLeft.position = Vector2(-h_extent, 0)
+	$Camera2D/Area2D/CollisionLeft.shape.set("extents", Vector2(1, v_extent))
+	$Camera2D/Area2D/CollisionLeft.position = Vector2(-h_extent, 0)
 	
-	$Area2D/CollisionRight.shape.set("extents", Vector2(1, v_extent))
-	$Area2D/CollisionRight.position = Vector2(h_extent, 0)
+	$Camera2D/Area2D/CollisionRight.shape.set("extents", Vector2(1, v_extent))
+	$Camera2D/Area2D/CollisionRight.position = Vector2(h_extent, 0)
 
 
 func _on_Area2D_body_exited(body):
@@ -60,5 +84,12 @@ func _on_Area2D_body_exited(body):
 
 
 func _on_Area2D_body_entered(body):
-	print('body entered')
+	pass
+#	print('body entered')
 #	zoom(0.125)
+
+
+func _on_Table_sleeping_state_changed():
+	if $Table.sleeping:
+		print('sleep')
+		reset_zoom()
