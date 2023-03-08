@@ -5,6 +5,7 @@ extends RigidBody2D
 var shooting = false
 var sinking = false
 var multiplier = 1.0
+var target_pos = Vector2.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
@@ -62,7 +63,7 @@ func position_line():
 		multiplier = 1.5
 
 
-func sink():
+func sink(target_pos):
 	$CollisionShape2D.set_deferred("disabled", true)
 	sinking = true
 
@@ -80,6 +81,6 @@ func _on_Ball_mouse_exited():
 
 
 func _on_Ball_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT and !sinking:
 		shooting = true
 		$Line.visible = true
