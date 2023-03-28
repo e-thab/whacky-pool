@@ -17,12 +17,10 @@ var ROT_SPEED = 3
 var POS_SPEED = 4
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	$Table.connect("pocket", self, "pocket_here")
+	GameManager.add_prog_bar($Table/UI/SlowBar)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if $Camera2D/Area2D.overlaps_body($Table):
 		target_zoom += 0.05
@@ -40,10 +38,6 @@ func _physics_process(delta):
 	if current_pos != target_pos:
 		current_pos = lerp(current_pos, target_pos, POS_SPEED * delta)
 		$Camera2D.position = current_pos
-
-
-func pocket_here():
-	print('sink')
 
 
 func set_zoom(n):
@@ -79,19 +73,13 @@ func position_camera_colliders():
 	$Camera2D/Area2D/CollisionRight.position = Vector2(h_extent, 0)
 
 
-func _on_Area2D_body_exited(body):
-	pass
-#	print('body exited')
-#	zoom(0.25)
-
-
-func _on_Area2D_body_entered(body):
-	pass
-#	print('body entered')
-#	zoom(0.125)
-
-
 func _on_Table_sleeping_state_changed():
 	if $Table.sleeping:
-		#print('sleep')
 		reset_zoom()
+
+
+func _on_ClockTimer_timeout():
+	GameManager.add_game_seconds(1)
+	var seconds = GameManager.game_seconds % 60
+	var minutes = GameManager.game_seconds / 60
+	$Table/UI/Clock.text = "%02d:%02d" % [minutes, seconds]

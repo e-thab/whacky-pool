@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Ball.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sprites/highlight.png" type="Texture" id=3]
 
-[sub_resource type="PhysicsMaterial" id=4]
+[sub_resource type="PhysicsMaterial" id=1]
 rough = true
 bounce = 0.6
 
@@ -23,13 +23,13 @@ void vertex() {
 shader = SubResource( 2 )
 shader_param/rate = 0.125
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=4]
 radius = 43.0
 
 [node name="Ball" type="RigidBody2D"]
 input_pickable = true
 mass = 10.0
-physics_material_override = SubResource( 4 )
+physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
 continuous_cd = 1
 script = ExtResource( 2 )
@@ -58,8 +58,7 @@ default_color = Color( 1, 1, 1, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -0.25 )
-shape = SubResource( 1 )
-
+shape = SubResource( 4 )
 [connection signal="input_event" from="." to="." method="_on_Ball_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_Ball_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Ball_mouse_exited"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scenes/Ball.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Sprites/15.png" type="Texture" id=2]
@@ -15,8 +15,10 @@
 [ext_resource path="res://Assets/Sprites/10.png" type="Texture" id=13]
 [ext_resource path="res://Assets/Sprites/13.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Sprites/11.png" type="Texture" id=15]
+[ext_resource path="res://Scenes/Rack.gd" type="Script" id=16]
 
 [node name="Rack" type="Node2D"]
+script = ExtResource( 16 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ],
 "_edit_vertical_guides_": [  ]
@@ -110,17 +112,31 @@ position = Vector2( 99.91, 172 )
 texture = ExtResource( 2 )
 
 [editable path="Ball1"]
+
 [editable path="Ball2"]
+
 [editable path="Ball3"]
+
 [editable path="Ball4"]
+
 [editable path="Ball5"]
+
 [editable path="Ball6"]
+
 [editable path="Ball7"]
+
 [editable path="Ball8"]
+
 [editable path="Ball9"]
+
 [editable path="Ball10"]
+
 [editable path="Ball11"]
+
 [editable path="Ball12"]
+
 [editable path="Ball13"]
+
 [editable path="Ball14"]
+
 [editable path="Ball15"]

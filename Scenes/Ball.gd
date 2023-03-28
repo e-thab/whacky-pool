@@ -1,16 +1,20 @@
 extends RigidBody2D
 
+signal shooting(shooting)
+signal sink
 
 # Declare member variables here. Examples:
 var shooting = false
 var sinking = false
+var sinking_pocket = null
 var multiplier = 1.0
-var target_pos = Vector2.ZERO
+#var target_pos = Vector2.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _init():
+	connect("shooting", GameManager, "set_shooting")
+	GameManager.add_ball(self)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,15 +24,28 @@ func _process(delta):
 			position_line()
 		else:
 			shoot()
+		
+	elif sinking:
+		$Sprite.rotation_degrees += delta * 500
+		$Sprite.scale -= Vector2(delta, delta)
+#		position.x = move_toward(position.x, sinking_pocket.position.x, delta * 500)
+#		position.y = move_toward(position.y, sinking_pocket.position.y, delta * 500)
+		global_position = lerp(global_position, sinking_pocket.global_position, delta * 20)
+	
+	if $Sprite.scale.x <= 0.01:
+		queue_free()
 
 
 func _physics_process(delta):
-	if sinking:
-		rotation_degrees += delta * 500
-		scale -= Vector2(delta, delta)
-	
-	if scale.x <= 0.01:
-		queue_free()
+	pass
+#	if sinking:
+#		rotation_degrees += delta * 500
+#		scale -= Vector2(delta, delta)
+#		position.x = move_toward(position.x, target_pos.x, delta * 500)
+#		position.y = move_toward(position.y, target_pos.y, delta * 500)
+#
+#	if scale.x <= 0.01:
+#		queue_free()
 
 
 func shoot():
@@ -36,6 +53,7 @@ func shoot():
 	apply_central_impulse(dist * 12 * multiplier)
 	shooting = false
 	$Line.visible = false
+	emit_signal("shooting", false)
 
 
 func position_line():
@@ -63,9 +81,12 @@ func position_line():
 		multiplier = 1.5
 
 
-func sink(target_pos):
+func sink(pocket_node):
 	$CollisionShape2D.set_deferred("disabled", true)
+	sleeping = true
 	sinking = true
+	sinking_pocket = pocket_node
+	emit_signal("sink")
 
 
 func _on_Ball_mouse_entered():
@@ -83,4 +104,5 @@ func _on_Ball_mouse_exited():
 func _on_Ball_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT and !sinking:
 		shooting = true
+		emit_signal("shooting", true)
 		$Line.visible = true
