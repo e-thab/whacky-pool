@@ -1,24 +1,13 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Table.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Rack.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sprites/cue ball.png" type="Texture" id=5]
-[ext_resource path="res://Assets/8bitoperator.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="PhysicsMaterial" id=5]
 bounce = 0.5
-
-[sub_resource type="StyleBoxFlat" id=6]
-bg_color = Color( 1, 1, 1, 1 )
-
-[sub_resource type="StyleBoxFlat" id=7]
-bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="DynamicFont" id=8]
-size = 112
-font_data = ExtResource( 6 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2560, 1 )
@@ -41,48 +30,6 @@ autostart = true
 [node name="Table" parent="." instance=ExtResource( 1 )]
 position = Vector2( -0.33371, 0 )
 physics_material_override = SubResource( 5 )
-
-[node name="UI" type="Control" parent="Table"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SlowBar" type="ProgressBar" parent="Table/UI"]
-self_modulate = Color( 1, 0.243137, 0.243137, 1 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -1147.0
-margin_top = -662.615
-margin_right = 1140.0
-margin_bottom = -569.615
-custom_styles/fg = SubResource( 6 )
-custom_styles/bg = SubResource( 7 )
-max_value = 6.0
-step = 0.001
-value = 3.0
-percent_visible = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Clock" type="Label" parent="Table/UI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -189.0
-margin_top = -878.2
-margin_right = 189.0
-margin_bottom = -709.2
-custom_fonts/font = SubResource( 8 )
-text = "00:00"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Rack" parent="." instance=ExtResource( 3 )]
 position = Vector2( 720, 0 )
@@ -116,6 +63,7 @@ shape = SubResource( 3 )
 [node name="CollisionRight" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( 2560, 0 )
 shape = SubResource( 4 )
+
 [connection signal="timeout" from="ClockTimer" to="." method="_on_ClockTimer_timeout"]
 [connection signal="sleeping_state_changed" from="Table" to="." method="_on_Table_sleeping_state_changed"]
 

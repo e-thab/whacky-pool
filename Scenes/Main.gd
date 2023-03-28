@@ -18,15 +18,17 @@ var POS_SPEED = 4
 
 
 func _ready():
-	GameManager.add_prog_bar($Table/UI/SlowBar)
+	pass
 
 
 func _process(delta):
+	if GameManager.shooting: return
 	if $Camera2D/Area2D.overlaps_body($Table):
 		target_zoom += 0.05
 
 
 func _physics_process(delta):
+	if GameManager.shooting: return
 	if current_zoom != target_zoom:
 		current_zoom = lerp(current_zoom, target_zoom, ZOOM_SPEED * delta)
 		set_zoom(current_zoom)
@@ -80,6 +82,4 @@ func _on_Table_sleeping_state_changed():
 
 func _on_ClockTimer_timeout():
 	GameManager.add_game_seconds(1)
-	var seconds = GameManager.game_seconds % 60
-	var minutes = GameManager.game_seconds / 60
-	$Table/UI/Clock.text = "%02d:%02d" % [minutes, seconds]
+	$Table.update_clock()

@@ -6,7 +6,10 @@ var MAX_SINK_VELOCITY = GameManager.MAX_SINK_VELOCITY
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#connect("sink", GameManager, "sink")
 	GameManager.connect("win", self, "win")
+	GameManager.connect("update_score", self, "on_update_score")
+	GameManager.add_prog_bar($UI/SlowBar)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -15,7 +18,22 @@ func _ready():
 
 
 func win():
+	$WinScreen/WinScore.text = "SCORE: %d" % GameManager.score
 	$WinScreen.visible = true
+
+
+func update_clock():
+	var seconds = GameManager.game_seconds % 60
+	var minutes = GameManager.game_seconds / 60
+	
+	if minutes > 99:
+		$UI/Clock.text = "BREAK:TIME"
+	else:
+		$UI/Clock.text = "%02d:%02d" % [minutes, seconds]
+
+
+func on_update_score():
+	$UI/Score.text = "SCORE: %d" % GameManager.score
 
 
 func _on_PocketTopLeft_body_entered(body):
