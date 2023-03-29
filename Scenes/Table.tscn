@@ -223,3 +223,4 @@ text = "Reset"
 [connection signal="body_entered" from="PocketBottomLeft" to="." method="_on_PocketBottomLeft_body_entered"]
 [connection signal="body_entered" from="PocketBottomMiddle" to="." method="_on_PocketBottomMiddle_body_entered"]
 [connection signal="body_entered" from="PocketBottomRight" to="." method="_on_PocketBottomRight_body_entered"]
+[connection signal="pressed" from="WinScreen/Button" to="." method="_on_Button_pressed"]

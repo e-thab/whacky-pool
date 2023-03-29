@@ -70,3 +70,7 @@ func _on_PocketBottomRight_body_entered(body):
 	if body.linear_velocity.length() < MAX_SINK_VELOCITY:
 		body.sink($PocketBottomRight/PocketPosition)
 		emit_signal("sink")
+
+
+func _on_Button_pressed():
+	GameManager.reset()

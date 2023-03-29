@@ -44,6 +44,21 @@ func _process(delta):
 		set_slowmo(false)
 
 
+func reset():
+	balls = []
+	sink_count = 0
+	score = 0
+	combo = 0
+	slow_time = 6.0
+	cooling_down = false
+	shooting = false
+	win_state
+	game_seconds = 0
+	prog_bar = null
+	score_label = null
+	get_tree().reload_current_scene()
+
+
 func add_prog_bar(bar):
 	prog_bar = bar
 	prog_bar.self_modulate = ABILITY_COLOR
