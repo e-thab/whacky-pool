@@ -2,6 +2,7 @@ extends Node
 
 signal win
 signal update_score
+signal update_combo
 
 const MAX_SINK_VELOCITY = 2000.0
 const MAX_ABILITY_SEC = 6.0
@@ -14,10 +15,12 @@ var sink_count = 0 # balls sunk
 var score = 0
 var combo = 0
 var slow_time = 6.0 # amount of slow ability left
+var game_seconds = 0
 var cooling_down = false # if ability was completely drained (cooldown trigger)
 var shooting = false # don't change camera while shooting
 var win_state = false # used to not register gameplay input after win
-var game_seconds = 0
+var table_sleeping = false # for combo
+var waiting_for_input = true # don't start time until first player input
 
 var prog_bar = null
 var score_label = null
@@ -50,12 +53,14 @@ func reset():
 	score = 0
 	combo = 0
 	slow_time = 6.0
+	game_seconds = 0
 	cooling_down = false
 	shooting = false
 	win_state = false
-	game_seconds = 0
+	waiting_for_input = true
 	prog_bar = null
 	score_label = null
+	set_slowmo(false)
 	get_tree().reload_current_scene()
 
 
@@ -77,23 +82,29 @@ func add_ball(ball):
 
 
 func add_game_seconds(sec):
-	game_seconds += sec
+	if !win_state and !waiting_for_input:
+		game_seconds += sec
+		add_score(-1)
 
 
 func add_combo(n):
 	combo += n
+	emit_signal("update_combo")
 
 
 func reset_combo():
 	combo = 0
+	emit_signal("update_combo")
 
 
 func add_score(n):
 	score += n
+	emit_signal("update_score")
 
 
 func multiply_score(n):
 	score *= n
+	emit_signal("update_score")
 
 
 func update_prog_bar():
@@ -121,17 +132,21 @@ func cool_down():
 
 
 func sink():
-	score += 1
-	emit_signal("update_score")
+	add_score(1 + combo)
 	
 	sink_count += 1
 	if sink_count >= len(balls):
 		emit_signal("win")
 		win_state = true
+		set_slowmo(false)
+		#score = abs(score - game_seconds)
+	
+	if !table_sleeping:
+		add_combo(1)
 
 
-func set_shooting(toggle):
-	shooting = toggle
+func set_shooting(state):
+	shooting = state
 
 
 func set_slowmo(on):
@@ -139,3 +154,9 @@ func set_slowmo(on):
 		Engine.time_scale = 0.125
 	else:
 		Engine.time_scale = 1
+
+
+func set_table_sleep_state(state):
+	table_sleeping = state
+	if table_sleeping:
+		reset_combo()

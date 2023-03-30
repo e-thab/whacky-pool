@@ -1,14 +1,17 @@
 extends RigidBody2D
 
 signal sink
+#signal table_sleeping_state_changed(state)
 
 var MAX_SINK_VELOCITY = GameManager.MAX_SINK_VELOCITY
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#connect("sink", GameManager, "sink")
+	#connect("table_sleeping_state_changed", GameManager, "on_table_sleeping_state_changed")
 	GameManager.connect("win", self, "win")
 	GameManager.connect("update_score", self, "on_update_score")
+	GameManager.connect("update_combo", self, "on_update_combo")
 	GameManager.add_prog_bar($UI/SlowBar)
 
 
@@ -39,6 +42,10 @@ func update_clock():
 
 func on_update_score():
 	$UI/Score.text = "SCORE: %d" % GameManager.score
+
+
+func on_update_combo():
+	$UI/Combo.text = "COMBO: %d" % GameManager.combo
 
 
 func _on_PocketTopLeft_body_entered(body):

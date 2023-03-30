@@ -47,8 +47,8 @@ func _process(delta):
 		queue_free()
 
 
-func _physics_process(delta):
-	pass
+#func _physics_process(delta):
+#	pass
 #	if sinking:
 #		rotation_degrees += delta * 500
 #		scale -= Vector2(delta, delta)
@@ -71,6 +71,7 @@ func shoot():
 	shooting = false
 	$Line.visible = false
 	$Highlight.visible = false
+	GameManager.waiting_for_input = false
 	emit_signal("shooting", false)
 	reset_z()
 
@@ -142,7 +143,7 @@ func _on_Ball_mouse_exited():
 	$Sprite.z_index = INACTIVE_BALL_Z
 
 
-func _on_Ball_input_event(viewport, event, shape_idx):
+func _on_Ball_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT and !sinking:
 		shooting = true
 		emit_signal("shooting", true)

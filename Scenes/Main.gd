@@ -21,7 +21,7 @@ func _ready():
 	pass
 
 
-func _process(delta):
+func _process(_delta):
 	if GameManager.shooting: return
 	if $Camera2D/Area2D.overlaps_body($Table):
 		target_zoom += 0.05
@@ -78,6 +78,9 @@ func position_camera_colliders():
 func _on_Table_sleeping_state_changed():
 	if $Table.sleeping:
 		reset_zoom()
+		GameManager.set_table_sleep_state(true)
+	else:
+		GameManager.set_table_sleep_state(false)
 
 
 func _on_ClockTimer_timeout():

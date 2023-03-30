@@ -63,6 +63,7 @@ shape = SubResource( 4 )
 [node name="CollisionRight" type="CollisionShape2D" parent="Camera2D/Area2D"]
 position = Vector2( 2560, 0 )
 shape = SubResource( 5 )
+
 [connection signal="timeout" from="ClockTimer" to="." method="_on_ClockTimer_timeout"]
 [connection signal="sleeping_state_changed" from="Table" to="." method="_on_Table_sleeping_state_changed"]
 
