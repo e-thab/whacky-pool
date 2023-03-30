@@ -3,18 +3,27 @@ extends RigidBody2D
 signal shooting(shooting)
 signal sink
 
-# Declare member variables here. Examples:
+const ACTIVE_BALL_Z = 13
+const ACTIVE_LINE_Z = 12
+const ACTIVE_HIGHLIGHT_Z = 11
+const INACTIVE_BALL_Z = 3
+const INACTIVE_HIGHLIGHT_Z = 1
+const VELOCITY_MULTIPLIER = 22
+
 var shooting = false
 var sinking = false
 var sinking_pocket = null
 var multiplier = 1.0
-#var target_pos = Vector2.ZERO
+var number = 0
 
 
 # Called when the node enters the scene tree for the first time.
 func _init():
 	connect("shooting", GameManager, "set_shooting")
 	GameManager.add_ball(self)
+
+func _ready():
+	$Line.z_index = ACTIVE_LINE_Z
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,36 +59,64 @@ func _physics_process(delta):
 #		queue_free()
 
 
+func apply_number(n):
+	# give ball number, match sprite
+	number = n
+	$Sprite.texture = load("res://Assets/Sprites/%d.png" % n)
+
+
 func shoot():
 	var dist = -(get_global_mouse_position() - global_position)
-	apply_central_impulse(dist * 12 * multiplier)
+	apply_central_impulse(dist * VELOCITY_MULTIPLIER * multiplier)
 	shooting = false
 	$Line.visible = false
+	$Highlight.visible = false
 	emit_signal("shooting", false)
+	reset_z()
+
+
+func reset_z():
+	$Highlight.z_index = INACTIVE_HIGHLIGHT_Z
+	$Sprite.z_index = INACTIVE_BALL_Z
+	$Line.z_index = ACTIVE_LINE_Z
 
 
 func position_line():
 	var pos = get_local_mouse_position()
+	var length = pos.length()
 	$Line.set_point_position(1, pos)
 	
-	if pos.length() < 40:
+	if length < 40:
 		$Line.self_modulate = Color.black
 		multiplier = 0
 		
-	elif pos.length() < 300:
-		$Line.self_modulate = Color.green
+	elif length < 440:
+		$Line.self_modulate = Color(
+			(length - 40.0) / (439.0 - 40.0),
+			1,
+			0
+		) # Green(0,1,0) -> Yellow(1,1,0)
 		multiplier = 0.85
 		
-	elif pos.length() < 600:
-		$Line.self_modulate = Color.yellow
+	elif length < 840:
+		$Line.self_modulate = Color(
+			1,
+			1 - (length - 440) / ((839-440) * 2),
+			0
+		) # Yellow(1,1,0) -> Orange(1,.5,0)
+		# Green = 1 - (839-440) / (839-440)*2
 		multiplier = 1.0
 		
-	elif pos.length() < 900:
-		$Line.self_modulate = Color.orange
-		multiplier = 1.15
+	elif length < 1240:
+		$Line.self_modulate = Color(
+			1,
+			0.5 - (length - 840) / ((1239-840) * 2),
+			0
+		) # Orange(1,.5,0) -> Red(1,0,0)
+		multiplier = 1.25
 		
 	else:
-		$Line.self_modulate = Color.red
+		$Line.self_modulate = Color.red # Red
 		multiplier = 1.5
 
 
@@ -92,15 +129,17 @@ func sink(pocket_node):
 
 
 func _on_Ball_mouse_entered():
+	if GameManager.shooting: return
 	$Highlight.visible = true
-	$Highlight.z_index = 10
-	$Sprite.z_index = 11
+	$Highlight.z_index = ACTIVE_HIGHLIGHT_Z
+	$Sprite.z_index = ACTIVE_BALL_Z
 
 
 func _on_Ball_mouse_exited():
+	if GameManager.shooting: return
 	$Highlight.visible = false
-	$Highlight.z_index = 0
-	$Sprite.z_index = 1
+	$Highlight.z_index = INACTIVE_HIGHLIGHT_Z
+	$Sprite.z_index = INACTIVE_BALL_Z
 
 
 func _on_Ball_input_event(viewport, event, shape_idx):

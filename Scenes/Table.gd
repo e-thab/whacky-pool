@@ -13,8 +13,13 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _physics_process(delta):
+	if !sleeping:
+#		$UI/MoveBar.value = linear_velocity.length() + angular_velocity
+		var target_val = linear_velocity.length() + angular_velocity
+		$UI/MoveBar.value = lerp($UI/MoveBar.value, target_val, delta*10)
+	else:
+		$UI/MoveBar.value = 0
 
 
 func win():

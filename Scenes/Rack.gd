@@ -8,7 +8,12 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	randomize()
+	var rands = range(1, 15)
+	rands.shuffle()
+	
+	for i in range(len(rands)):
+		get_child(i).apply_number(rands[i])
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -3,10 +3,10 @@ extends Node
 signal win
 signal update_score
 
-const MAX_SINK_VELOCITY = 1850.0
+const MAX_SINK_VELOCITY = 2000.0
 const MAX_ABILITY_SEC = 6.0
 const COOLDOWN_SEC = 2.0
-var ABILITY_COLOR = Color("3eff97")
+var ABILITY_COLOR = Color("7feb98")
 var COOLDOWN_COLOR = Color("ff3e3e")
 
 var balls = []
@@ -16,7 +16,7 @@ var combo = 0
 var slow_time = 6.0 # amount of slow ability left
 var cooling_down = false # if ability was completely drained (cooldown trigger)
 var shooting = false # don't change camera while shooting
-var win_state # used to not register gameplay input after win
+var win_state = false # used to not register gameplay input after win
 var game_seconds = 0
 
 var prog_bar = null
@@ -52,7 +52,7 @@ func reset():
 	slow_time = 6.0
 	cooling_down = false
 	shooting = false
-	win_state
+	win_state = false
 	game_seconds = 0
 	prog_bar = null
 	score_label = null

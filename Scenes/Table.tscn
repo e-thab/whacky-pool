@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Table.gd" type="Script" id=1]
 [ext_resource path="res://Assets/8bitoperator.ttf" type="DynamicFontData" id=2]
@@ -9,33 +9,39 @@
 flags = 4
 load_path = "res://.import/table.png-1c1366adec3c0bd92464a1fe6da1281c.stex"
 
-[sub_resource type="SegmentShape2D" id=6]
+[sub_resource type="SegmentShape2D" id=2]
 a = Vector2( 50, -50 )
 b = Vector2( -50, 50 )
 
-[sub_resource type="SegmentShape2D" id=2]
+[sub_resource type="SegmentShape2D" id=3]
 a = Vector2( 87, 0 )
 b = Vector2( -87, 0 )
 
-[sub_resource type="SegmentShape2D" id=3]
+[sub_resource type="SegmentShape2D" id=4]
 a = Vector2( 50, 50 )
 b = Vector2( -50, -50 )
 
-[sub_resource type="SegmentShape2D" id=4]
+[sub_resource type="SegmentShape2D" id=5]
 a = Vector2( -50, -50 )
 b = Vector2( 50, 50 )
 
-[sub_resource type="SegmentShape2D" id=5]
+[sub_resource type="SegmentShape2D" id=6]
 a = Vector2( -50, 50 )
 b = Vector2( 50, -50 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=9]
 size = 100
 font_data = ExtResource( 2 )
 
@@ -44,7 +50,7 @@ mass = 70.0
 gravity_scale = 0.0
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [ -1016.0 ],
+"_edit_horizontal_guides_": [ -1016.0, 1014.68 ],
 "_edit_vertical_guides_": [ -1952.0 ]
 }
 
@@ -57,8 +63,8 @@ polygon = PoolVector2Array( -1752, -936, -112, -936, -96, -950, -91, -1014, -91,
 [node name="PocketTopLeft" type="Area2D" parent="."]
 
 [node name="TopLeft" type="CollisionShape2D" parent="PocketTopLeft"]
-position = Vector2( -1907, -969 )
-shape = SubResource( 6 )
+position = Vector2( -1897, -959 )
+shape = SubResource( 2 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketTopLeft"]
 position = Vector2( -1928, -992 )
@@ -66,8 +72,8 @@ position = Vector2( -1928, -992 )
 [node name="PocketTopMiddle" type="Area2D" parent="."]
 
 [node name="TopMiddle" type="CollisionShape2D" parent="PocketTopMiddle"]
-position = Vector2( 0, -1035 )
-shape = SubResource( 2 )
+position = Vector2( 0, -1025 )
+shape = SubResource( 3 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketTopMiddle"]
 position = Vector2( 0, -1040 )
@@ -75,8 +81,8 @@ position = Vector2( 0, -1040 )
 [node name="PocketTopRight" type="Area2D" parent="."]
 
 [node name="TopRight" type="CollisionShape2D" parent="PocketTopRight"]
-position = Vector2( 1907, -969 )
-shape = SubResource( 3 )
+position = Vector2( 1897, -959 )
+shape = SubResource( 4 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketTopRight"]
 position = Vector2( 1928, -992 )
@@ -84,8 +90,8 @@ position = Vector2( 1928, -992 )
 [node name="PocketBottomLeft" type="Area2D" parent="."]
 
 [node name="BottomLeft" type="CollisionShape2D" parent="PocketBottomLeft"]
-position = Vector2( -1907, 969 )
-shape = SubResource( 4 )
+position = Vector2( -1897, 959 )
+shape = SubResource( 5 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketBottomLeft"]
 position = Vector2( -1928, 992 )
@@ -93,8 +99,8 @@ position = Vector2( -1928, 992 )
 [node name="PocketBottomMiddle" type="Area2D" parent="."]
 
 [node name="BottomMiddle" type="CollisionShape2D" parent="PocketBottomMiddle"]
-position = Vector2( 0, 1035 )
-shape = SubResource( 2 )
+position = Vector2( 0, 1025 )
+shape = SubResource( 3 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketBottomMiddle"]
 position = Vector2( 0, 1040 )
@@ -102,8 +108,8 @@ position = Vector2( 0, 1040 )
 [node name="PocketBottomRight" type="Area2D" parent="."]
 
 [node name="BottomRight" type="CollisionShape2D" parent="PocketBottomRight"]
-position = Vector2( 1907, 969 )
-shape = SubResource( 5 )
+position = Vector2( 1897, 959 )
+shape = SubResource( 6 )
 
 [node name="PocketPosition" type="Node2D" parent="PocketBottomRight"]
 position = Vector2( 1928, 992 )
@@ -113,21 +119,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="SlowBar" type="ProgressBar" parent="UI"]
-self_modulate = Color( 1, 0.243137, 0.243137, 1 )
+self_modulate = Color( 0.498039, 0.921569, 0.596078, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -1147.0
-margin_top = 1259.0
+margin_top = 1263.49
 margin_right = 1140.0
-margin_bottom = 1352.0
-custom_styles/fg = SubResource( 9 )
-custom_styles/bg = SubResource( 10 )
+margin_bottom = 1356.49
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
 max_value = 6.0
 step = 0.001
 value = 3.0
 percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveBar" type="ProgressBar" parent="UI"]
+self_modulate = Color( 0.498039, 0.921569, 0.596078, 1 )
+margin_left = 2208.0
+margin_top = 1009.0
+margin_right = 4225.0
+margin_bottom = 1109.0
+rect_rotation = -90.0
+custom_styles/fg = SubResource( 10 )
+custom_styles/bg = SubResource( 11 )
+min_value = 5.0
+max_value = 1000.0
+step = 0.1
+value = 37.2
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Clock" type="Label" parent="UI"]
 anchor_left = 0.5
@@ -214,9 +241,8 @@ margin_left = -500.5
 margin_top = 78.5298
 margin_right = 500.5
 margin_bottom = 374.53
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "Reset"
-
 [connection signal="body_entered" from="PocketTopLeft" to="." method="_on_PocketTopLeft_body_entered"]
 [connection signal="body_entered" from="PocketTopMiddle" to="." method="_on_PocketTopMiddle_body_entered"]
 [connection signal="body_entered" from="PocketTopRight" to="." method="_on_PocketTopRight_body_entered"]
