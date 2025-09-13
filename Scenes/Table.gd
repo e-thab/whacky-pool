@@ -9,9 +9,14 @@ var MAX_SINK_VELOCITY = GameManager.MAX_SINK_VELOCITY
 func _ready():
 	#connect("sink", GameManager, "sink")
 	#connect("table_sleeping_state_changed", GameManager, "on_table_sleeping_state_changed")
-	GameManager.connect("win", self, "win")
-	GameManager.connect("update_score", self, "on_update_score")
-	GameManager.connect("update_combo", self, "on_update_combo")
+	
+	#GameManager.connect("win", self, "win")
+	#GameManager.connect("update_score", self, "on_update_score")
+	#GameManager.connect("update_combo", self, "on_update_combo")
+	
+	GameManager.win.connect(win)
+	GameManager.update_score.connect(on_update_score)
+	GameManager.update_combo.connect(on_update_combo)
 	GameManager.add_prog_bar($UI/SlowBar)
 
 

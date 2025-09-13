@@ -1,7 +1,7 @@
 extends RigidBody2D
 
-signal shooting(shooting)
-signal sink
+signal shooting_signal(shooting_bool)
+signal sink_signal
 
 const ACTIVE_BALL_Z = 13
 const ACTIVE_LINE_Z = 12
@@ -19,7 +19,8 @@ var number = 0
 
 # Called when the node enters the scene tree for the first time.
 func _init():
-	connect("shooting", GameManager, "set_shooting")
+	#connect("shooting", GameManager, "set_shooting")
+	shooting_signal.connect(GameManager.set_shooting)
 	GameManager.add_ball(self)
 
 func _ready():
@@ -30,7 +31,8 @@ func _ready():
 func _process(delta):
 	if shooting:
 		if Input.is_action_just_pressed("left_click"):
-			emit_signal("shooting", true)
+			#emit_signal("shooting", true)
+			shooting_signal.emit(true)
 		if Input.is_action_pressed("left_click"):
 			position_line()
 		else:
@@ -72,7 +74,8 @@ func shoot():
 	$Line.visible = false
 	$Highlight.visible = false
 	GameManager.waiting_for_input = false
-	emit_signal("shooting", false)
+	#emit_signal("shooting", false)
+	shooting_signal.emit(false)
 	reset_z()
 
 
@@ -88,7 +91,7 @@ func position_line():
 	$Line.set_point_position(1, pos)
 	
 	if length < 40:
-		$Line.self_modulate = Color.black
+		$Line.self_modulate = Color.BLACK
 		multiplier = 0
 		
 	elif length < 440:
@@ -117,7 +120,7 @@ func position_line():
 		multiplier = 1.25
 		
 	else:
-		$Line.self_modulate = Color.red # Red
+		$Line.self_modulate = Color.RED
 		multiplier = 1.5
 
 
@@ -126,7 +129,8 @@ func sink(pocket_node):
 	sleeping = true
 	sinking = true
 	sinking_pocket = pocket_node
-	emit_signal("sink")
+	#emit_signal("sink")
+	sink_signal.emit()
 
 
 func _on_Ball_mouse_entered():
@@ -144,7 +148,8 @@ func _on_Ball_mouse_exited():
 
 
 func _on_Ball_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT and !sinking:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and !sinking:
 		shooting = true
-		emit_signal("shooting", true)
+		#emit_signal("shooting", true)
+		shooting_signal.emit(true)
 		$Line.visible = true

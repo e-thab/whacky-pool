@@ -3,11 +3,11 @@ extends Node2D
 
 # Declare member variables here. Examples:
 #var zoom_duration = 0.0
-var current_zoom = 5
-var target_zoom = 5
+var current_zoom: float = 0.215
+var target_zoom: float = 0.215
 
-var current_rot = 0
-var target_rot = 0
+var current_rot: float = 0
+var target_rot: float = 0
 
 var current_pos = Vector2.ZERO
 var target_pos = Vector2.ZERO
@@ -45,13 +45,14 @@ func _physics_process(delta):
 func set_zoom(n):
 	$Camera2D.zoom.x = n
 	$Camera2D.zoom.y = n
+	current_zoom = n
 	position_camera_colliders()
 
 
 func reset_zoom():
 	target_rot = $Table.rotation_degrees
 	target_pos = $Table.position
-	target_zoom = 5
+	target_zoom = 0.215
 	position_camera_colliders()
 
 

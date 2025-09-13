@@ -77,7 +77,7 @@ func add_score_label(label):
 
 func add_ball(ball):
 	balls.append(ball)
-	ball.connect("sink", self, "sink")
+	ball.sink_signal.connect(sink)
 	#ball.connect("shooting", self, "toggle_slowmo")
 
 
@@ -126,7 +126,7 @@ func cool_down():
 	cooling_down = true
 	prog_bar.self_modulate = COOLDOWN_COLOR
 	set_slowmo(false)
-	yield(get_tree().create_timer(COOLDOWN_SEC), "timeout")
+	await get_tree().create_timer(COOLDOWN_SEC).timeout
 	cooling_down = false
 	prog_bar.self_modulate = ABILITY_COLOR
 
