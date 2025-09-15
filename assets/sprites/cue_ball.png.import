@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhq1lpi6a6sot"
-path="res://.godot/imported/cue ball.png-25572a8f4fb4cfd98ea01cc8ceb7648a.ctex"
+path="res://.godot/imported/cue_ball.png-7dd2ab3406e884ff622e362e7250bdac.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/cue ball.png"
-dest_files=["res://.godot/imported/cue ball.png-25572a8f4fb4cfd98ea01cc8ceb7648a.ctex"]
+source_file="res://assets/sprites/cue_ball.png"
+dest_files=["res://.godot/imported/cue_ball.png-7dd2ab3406e884ff622e362e7250bdac.ctex"]
 
 [params]
 

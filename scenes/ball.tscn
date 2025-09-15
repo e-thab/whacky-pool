@@ -1,17 +1,60 @@
-[gd_scene load_steps=3 format=3 uid="uid://cv7y242bw66p5"]
+[gd_scene load_steps=8 format=3 uid="uid://cv7y242bw66p5"]
 
-[ext_resource type="Texture2D" uid="uid://dx20fu34yajdl" path="res://assets/sprites/8.png" id="1_p0d2h"]
+[ext_resource type="Script" path="res://scripts/ball.gd" id="1_rlixw"]
+[ext_resource type="Shader" path="res://assets/ball.gdshader" id="2_8nkny"]
+[ext_resource type="Texture2D" uid="uid://dhq1lpi6a6sot" path="res://assets/sprites/cue_ball.png" id="2_bgxxp"]
+[ext_resource type="Texture2D" uid="uid://bfndo7u7kjya0" path="res://assets/sprites/highlight.png" id="2_ww0t4"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_50k6e"]
+rough = true
+bounce = 0.6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b0upl"]
+shader = ExtResource("2_8nkny")
+shader_parameter/rate = 0.125
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2ejpu"]
 radius = 43.0465
 
 [node name="Ball" type="RigidBody2D"]
+input_pickable = true
+mass = 10.0
+physics_material_override = SubResource("PhysicsMaterial_50k6e")
+gravity_scale = 0.0
+continuous_cd = 1
+script = ExtResource("1_rlixw")
+sprite_texture = ExtResource("2_bgxxp")
 metadata/_edit_group_ = true
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+z_index = 12
+points = PackedVector2Array(0, 0, 50, -29)
+width = 6.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="ShotDebugLine" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 4.0
+default_color = Color(1, 0, 1, 1)
+
+[node name="Highlight" type="Sprite2D" parent="."]
+visible = false
+z_index = 11
+material = SubResource("ShaderMaterial_b0upl")
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_ww0t4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.235, 0.235)
-texture = ExtResource("1_p0d2h")
+texture = ExtResource("2_bgxxp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(0.235, 0.235)
 shape = SubResource("CircleShape2D_2ejpu")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

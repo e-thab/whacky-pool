@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=5 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
 [ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="3_4kfs5"]
+[ext_resource type="PackedScene" uid="uid://dx6vq21eonegw" path="res://scenes/rack.tscn" id="4_ug4bl"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
@@ -21,8 +22,10 @@ offset_right = 576.0
 offset_bottom = 324.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Camera2D/UI"]
+visible = false
 layout_mode = 0
 offset_left = 23.0
 offset_top = 22.0
@@ -37,12 +40,12 @@ build_mode = 1
 polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 
 [node name="Table" parent="." instance=ExtResource("1_52dv5")]
-mass = 7.0
-gravity_scale = 0.0
 
 [node name="Ball" parent="." instance=ExtResource("3_4kfs5")]
-position = Vector2(-168, -15)
+position = Vector2(-138.18, 0)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.995
-autostart = true
+
+[node name="Rack" parent="." instance=ExtResource("4_ug4bl")]
+position = Vector2(169.2, 0)

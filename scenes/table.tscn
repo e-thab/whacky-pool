@@ -1,13 +1,41 @@
-[gd_scene load_steps=3 format=3 uid="uid://dudvkl4ve2be8"]
+[gd_scene load_steps=10 format=3 uid="uid://dudvkl4ve2be8"]
 
+[ext_resource type="Script" path="res://scripts/table.gd" id="1_gyr1b"]
 [ext_resource type="Texture2D" uid="uid://dyqclhapobikd" path="res://assets/sprites/table.png" id="1_uicjx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kxksc"]
 rough = true
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_knbi3"]
+a = Vector2(-6, 20)
+b = Vector2(20, -6)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_17wer"]
+a = Vector2(-22, 3)
+b = Vector2(22, 3)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_n4ova"]
+a = Vector2(-20, -6)
+b = Vector2(6, 20)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5ysn8"]
+a = Vector2(-6, -20)
+b = Vector2(20, 6)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_wg7dw"]
+a = Vector2(-22, -3)
+b = Vector2(22, -3)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_aixea"]
+a = Vector2(-20, 6)
+b = Vector2(6, -20)
+
 [node name="Table" type="RigidBody2D"]
+mass = 70.0
 physics_material_override = SubResource("PhysicsMaterial_kxksc")
-metadata/_edit_group_ = true
+gravity_scale = 0.0
+continuous_cd = 1
+script = ExtResource("1_gyr1b")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.235, 0.235)
@@ -16,3 +44,46 @@ texture = ExtResource("1_uicjx")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(0.235, 0.235)
 polygon = PackedVector2Array(-1752, -936, -112, -936, -96, -950, -91, -1014, -91, -1036, -83, -1062, -71, -1083, -50, -1101, -26, -1112, 0, -1116, 26, -1112, 50, -1101, 71, -1083, 83, -1062, 91, -1036, 91, -1014, 96, -950, 112, -936, 1752, -936, 1843, -1014, 1884, -1049, 1902, -1061, 1918, -1066, 1935, -1068, 1952, -1065, 1968, -1059, 1983, -1048, 1993, -1035, 2000, -1022, 2004, -1008, 2005, -991, 2001, -970, 1991, -952, 1952, -906, 1874, -814, 1874, 814, 1952, 906, 1990, 950, 2000, 966, 2004, 983, 2005, 1001, 2001, 1020, 1991, 1038, 1978, 1052, 1960, 1063, 1941, 1067, 1921, 1067, 1901, 1061, 1882, 1048, 1843, 1014, 1752, 936, 112, 936, 96, 950, 91, 1014, 91, 1036, 83, 1062, 71, 1083, 50, 1101, 26, 1112, 0, 1116, -26, 1112, -50, 1101, -71, 1083, -83, 1062, -91, 1036, -91, 1014, -96, 950, -112, 936, -1752, 936, -1843, 1014, -1882, 1048, -1901, 1061, -1921, 1067, -1941, 1067, -1960, 1063, -1978, 1052, -1991, 1038, -2001, 1020, -2005, 1001, -2004, 983, -2000, 966, -1990, 950, -1952, 906, -1874, 814, -1874, -814, -1952, -906, -1991, -952, -2001, -970, -2005, -991, -2004, -1008, -2000, -1022, -1993, -1035, -1983, -1048, -2083, -1145, -2137, -1014, -2137, 1014, -2083, 1145, -1852, 1198, 1952, 1198, 2083, 1145, 2137, 1014, 2137, -1014, 2083, -1145, 1952, -1198, -1952, -1198, -2083, -1145, -1983, -1048, -1968, -1059, -1952, -1065, -1935, -1068, -1918, -1066, -1902, -1061, -1884, -1049, -1843, -1014, -1752, -936)
+
+[node name="PocketTopLeft" type="Area2D" parent="."]
+position = Vector2(-453.08, -233.12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketTopLeft"]
+shape = SubResource("SegmentShape2D_knbi3")
+
+[node name="PocketTopMiddle" type="Area2D" parent="."]
+position = Vector2(0, -244.4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketTopMiddle"]
+shape = SubResource("SegmentShape2D_17wer")
+
+[node name="PocketTopRight" type="Area2D" parent="."]
+position = Vector2(453.08, -233.12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketTopRight"]
+shape = SubResource("SegmentShape2D_n4ova")
+
+[node name="PocketBottomLeft" type="Area2D" parent="."]
+position = Vector2(-453.08, 233.12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketBottomLeft"]
+shape = SubResource("SegmentShape2D_5ysn8")
+
+[node name="PocketBottomMiddle" type="Area2D" parent="."]
+position = Vector2(0, 244.4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketBottomMiddle"]
+shape = SubResource("SegmentShape2D_wg7dw")
+
+[node name="PocketBottomRight" type="Area2D" parent="."]
+position = Vector2(453.08, 233.12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PocketBottomRight"]
+shape = SubResource("SegmentShape2D_aixea")
+
+[connection signal="body_entered" from="PocketTopLeft" to="." method="_on_pocket_top_left_body_entered"]
+[connection signal="body_entered" from="PocketTopMiddle" to="." method="_on_pocket_top_middle_body_entered"]
+[connection signal="body_entered" from="PocketTopRight" to="." method="_on_pocket_top_right_body_entered"]
+[connection signal="body_entered" from="PocketBottomLeft" to="." method="_on_pocket_bottom_left_body_entered"]
+[connection signal="body_entered" from="PocketBottomMiddle" to="." method="_on_pocket_bottom_middle_body_entered"]
+[connection signal="body_entered" from="PocketBottomRight" to="." method="_on_pocket_bottom_right_body_entered"]

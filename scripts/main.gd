@@ -1,11 +1,13 @@
 extends Node2D
 
-const ZOOM_SPEED: float = 2.0
+const ZOOM_SPEED: float = 3.0
 const POS_SPEED: float = 4.0
-const ROT_SPEED: float = 3.0
-var target_zoom: float = 1.0
+const ROT_SPEED: float = 4.0
+var target_scale: float = 1.0
 var target_pos: Vector2 = Vector2.ZERO
 var target_rot: float = 0.0
+var resetting_camera: bool = false
+var currently_shooting: bool = false # True while shooting any ball
 @onready var camera: Camera2D = $Camera2D
 @onready var cam_area: Area2D = $Camera2D/Area2D
 @onready var table: RigidBody2D = $Table
@@ -15,39 +17,60 @@ var target_rot: float = 0.0
 func _ready() -> void:
 	table.sleeping_state_changed.connect(_on_table_sleeping_state_changed)
 	$Timer.timeout.connect(timer_timeout)
+	$Ball.activate.connect(_on_ball_activate)
+	$Ball.deactivate.connect(_on_ball_deactivate)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if cam_area.overlaps_body(table):
-		target_zoom += 0.01
-		#print('overlapping')
+	if currently_shooting:
+		return
+	if cam_area.overlaps_body(table) and not resetting_camera:
+		target_scale += 0.01
 
 
 func _physics_process(delta: float) -> void:
-	camera.scale = lerp(camera.scale, Vector2(target_zoom, target_zoom), ZOOM_SPEED * delta)
-	camera.zoom.x = 1.0 / camera.scale.x
-	camera.zoom.y = 1.0 / camera.scale.y
+	if currently_shooting:
+		return
+	camera.scale = lerp(camera.scale, Vector2(target_scale, target_scale), ZOOM_SPEED * delta)
+	camera.zoom = Vector2(1.0 / camera.scale.x, 1.0 / camera.scale.y)
 	
 	if camera.position != target_pos:
 		camera.position = lerp(camera.position, target_pos, POS_SPEED * delta)
 	
 	if camera.rotation != target_rot:
 		camera.rotation = lerp(camera.rotation, target_rot, ROT_SPEED * delta)
-	#print('camera zoom = ', camera.zoom.x, ', 1/tz = ', 1.0 / target_zoom)
-	#print(camera.zoom.x - 1.0 / target_zoom)
 	
-	#if camera.position != table.position:
-		#camera.position = lerp(camera.position, table.position, POS_SPEED * delta)
+	if resetting_camera:
+		if within(camera.scale.x, target_scale) and within(camera.position.x, target_pos.x) and within(camera.rotation, target_rot):
+			resetting_camera = false
+			#print('cam set')
+
+
+func within(a: float, b: float, t: float = 0.025) -> bool:
+	## Returns true if the difference of a and b is less than a threshold t.
+	## Use to compare floats
+	return a - b < t
 
 
 func timer_timeout() -> void:
 	if get_node_or_null("Ball"):
-		print('free ball')
+		#print('free ball')
 		$Ball.queue_free()
 
 
+func _on_ball_activate() -> void:
+	currently_shooting = true
+
+
+func _on_ball_deactivate() -> void:
+	currently_shooting = false
+
+
 func _on_table_sleeping_state_changed() -> void:
-	if table.sleeping:
+	if table.sleeping and not currently_shooting:
 		target_pos = table.position
 		target_rot = table.rotation
+		target_scale = 1.0
+		resetting_camera = true
+		#print('setting cam')

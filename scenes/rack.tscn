@@ -1,0 +1,82 @@
+[gd_scene load_steps=18 format=3 uid="uid://dx6vq21eonegw"]
+
+[ext_resource type="Script" path="res://scripts/rack.gd" id="1_4otna"]
+[ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="1_4slkj"]
+[ext_resource type="Texture2D" uid="uid://cl8u2chmmxe0t" path="res://assets/sprites/1.png" id="2_3dyws"]
+[ext_resource type="Texture2D" uid="uid://d0jur8s4utk1a" path="res://assets/sprites/2.png" id="3_ynrt2"]
+[ext_resource type="Texture2D" uid="uid://doohdlc6m1h8s" path="res://assets/sprites/3.png" id="4_1r7ol"]
+[ext_resource type="Texture2D" uid="uid://dj7a0klg0r8iw" path="res://assets/sprites/15.png" id="5_inbmw"]
+[ext_resource type="Texture2D" uid="uid://28cbsjq24jme" path="res://assets/sprites/4.png" id="6_543qm"]
+[ext_resource type="Texture2D" uid="uid://cj4arruikaatk" path="res://assets/sprites/5.png" id="7_fbprd"]
+[ext_resource type="Texture2D" uid="uid://ch2o0nejowi8r" path="res://assets/sprites/6.png" id="8_jhlx2"]
+[ext_resource type="Texture2D" uid="uid://clux565mnovbw" path="res://assets/sprites/7.png" id="9_hqo80"]
+[ext_resource type="Texture2D" uid="uid://dx20fu34yajdl" path="res://assets/sprites/8.png" id="10_ejh52"]
+[ext_resource type="Texture2D" uid="uid://cbrqc4vk7wne7" path="res://assets/sprites/9.png" id="11_6gxxg"]
+[ext_resource type="Texture2D" uid="uid://csl8jbh2pib82" path="res://assets/sprites/10.png" id="12_i847x"]
+[ext_resource type="Texture2D" uid="uid://orfsit2xpyue" path="res://assets/sprites/11.png" id="13_qtstt"]
+[ext_resource type="Texture2D" uid="uid://jqoolfbor7ch" path="res://assets/sprites/12.png" id="14_p32ad"]
+[ext_resource type="Texture2D" uid="uid://bvhb1sukerwoe" path="res://assets/sprites/13.png" id="15_0pw0o"]
+[ext_resource type="Texture2D" uid="uid://c1kqt7kfkec4k" path="res://assets/sprites/14.png" id="16_4wpw6"]
+
+[node name="Rack" type="Node2D"]
+script = ExtResource("1_4otna")
+
+[node name="Ball1" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-46.53, 0)
+sprite_texture = ExtResource("2_3dyws")
+
+[node name="Ball2" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-29.027, -10.105)
+sprite_texture = ExtResource("3_ynrt2")
+
+[node name="Ball3" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-29.027, 10.105)
+sprite_texture = ExtResource("4_1r7ol")
+
+[node name="Ball4" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-11.524, -20.21)
+sprite_texture = ExtResource("6_543qm")
+
+[node name="Ball5" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-11.524, 0)
+sprite_texture = ExtResource("7_fbprd")
+
+[node name="Ball6" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(-11.524, 20.21)
+sprite_texture = ExtResource("8_jhlx2")
+
+[node name="Ball7" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(5.976, -30.315)
+sprite_texture = ExtResource("9_hqo80")
+
+[node name="Ball8" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(5.976, -10.105)
+sprite_texture = ExtResource("10_ejh52")
+
+[node name="Ball9" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(5.976, 10.105)
+sprite_texture = ExtResource("11_6gxxg")
+
+[node name="Ball10" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(5.976, 30.315)
+sprite_texture = ExtResource("12_i847x")
+
+[node name="Ball11" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(23.479, -40.42)
+sprite_texture = ExtResource("13_qtstt")
+
+[node name="Ball12" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(23.479, -20.21)
+sprite_texture = ExtResource("14_p32ad")
+
+[node name="Ball13" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(23.479, 0)
+sprite_texture = ExtResource("15_0pw0o")
+
+[node name="Ball14" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(23.479, 20.21)
+sprite_texture = ExtResource("16_4wpw6")
+
+[node name="Ball15" parent="." instance=ExtResource("1_4slkj")]
+position = Vector2(23.479, 40.42)
+sprite_texture = ExtResource("5_inbmw")
