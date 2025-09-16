@@ -38,13 +38,14 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if currently_shooting:
 		var mouse_pos = get_viewport().get_mouse_position()
-		if mouse_pos.x < 30:
-			target_scale += 0.0004 * abs(mouse_pos.x - 30)
-		if mouse_pos.x > get_viewport_rect().size.x - 30:
+		var screen_margin = 30
+		if mouse_pos.x < screen_margin:
+			target_scale += 0.0004 * abs(mouse_pos.x - screen_margin)
+		if mouse_pos.x > get_viewport_rect().size.x - screen_margin:
 			target_scale += 0.0004 * abs(mouse_pos.x - get_viewport_rect().size.x)
-		if mouse_pos.y < 30:
-			target_scale += 0.0004 * abs(mouse_pos.y - 30)
-		if mouse_pos.y > get_viewport_rect().size.y - 30:
+		if mouse_pos.y < screen_margin:
+			target_scale += 0.0004 * abs(mouse_pos.y - screen_margin)
+		if mouse_pos.y > get_viewport_rect().size.y - screen_margin:
 			target_scale += 0.0004 * abs(mouse_pos.y - get_viewport_rect().size.y)
 		target_scale = clamp(target_scale, 0, 5)
 	

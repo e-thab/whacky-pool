@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=7 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
 [ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="3_4kfs5"]
+[ext_resource type="Texture2D" uid="uid://cl8u2chmmxe0t" path="res://assets/sprites/1.png" id="4_3gbl8"]
 [ext_resource type="PackedScene" uid="uid://dx6vq21eonegw" path="res://scenes/rack.tscn" id="4_ug4bl"]
+[ext_resource type="Texture2D" uid="uid://d0jur8s4utk1a" path="res://assets/sprites/2.png" id="5_lsm6v"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
@@ -43,6 +45,14 @@ polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 
 [node name="CueBall" parent="." instance=ExtResource("3_4kfs5")]
 position = Vector2(-138.18, 0)
+
+[node name="Ball1" parent="." instance=ExtResource("3_4kfs5")]
+position = Vector2(-85, -31)
+sprite_texture = ExtResource("4_3gbl8")
+
+[node name="Ball2" parent="." instance=ExtResource("3_4kfs5")]
+position = Vector2(-30, -66)
+sprite_texture = ExtResource("5_lsm6v")
 
 [node name="Rack" parent="." instance=ExtResource("4_ug4bl")]
 position = Vector2(169.2, 0)

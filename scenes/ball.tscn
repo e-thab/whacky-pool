@@ -1,9 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://cv7y242bw66p5"]
+[gd_scene load_steps=12 format=3 uid="uid://cv7y242bw66p5"]
 
 [ext_resource type="Script" path="res://scripts/ball.gd" id="1_rlixw"]
 [ext_resource type="Shader" path="res://assets/ball.gdshader" id="2_8nkny"]
 [ext_resource type="Texture2D" uid="uid://dhq1lpi6a6sot" path="res://assets/sprites/cue_ball.png" id="2_bgxxp"]
 [ext_resource type="Texture2D" uid="uid://bfndo7u7kjya0" path="res://assets/sprites/highlight.png" id="2_ww0t4"]
+[ext_resource type="AudioStream" uid="uid://fyxmjqjckq7j" path="res://assets/sounds/shot_mid.wav" id="5_8tadj"]
+[ext_resource type="AudioStream" uid="uid://bsgc5indarxjb" path="res://assets/sounds/pocket.wav" id="5_deo6c"]
+[ext_resource type="AudioStream" uid="uid://ihiwktlx1e2g" path="res://assets/sounds/shot_quiet.wav" id="6_6jcbc"]
+[ext_resource type="AudioStream" uid="uid://btmk6qxohym8q" path="res://assets/sounds/shot_loud.wav" id="8_byxxy"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_50k6e"]
 rough = true
@@ -22,6 +26,8 @@ mass = 10.0
 physics_material_override = SubResource("PhysicsMaterial_50k6e")
 gravity_scale = 0.0
 continuous_cd = 1
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_rlixw")
 sprite_texture = ExtResource("2_bgxxp")
 metadata/_edit_group_ = true
@@ -55,6 +61,19 @@ texture = ExtResource("2_bgxxp")
 scale = Vector2(0.235, 0.235)
 shape = SubResource("CircleShape2D_2ejpu")
 
+[node name="Pocket" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_deo6c")
+
+[node name="ShotQuiet" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_6jcbc")
+
+[node name="ShotMid" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_8tadj")
+
+[node name="ShotLoud" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_byxxy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

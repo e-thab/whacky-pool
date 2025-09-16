@@ -7,7 +7,7 @@ const ACTIVE_BALL_Z: int = 13
 const ACTIVE_LINE_Z: int = 12
 const ACTIVE_HIGHLIGHT_Z: int = 11
 const INACTIVE_BALL_Z: int = 3
-const INACTIVE_HIGHLIGHT_Z: int = 1
+#const INACTIVE_HIGHLIGHT_Z: int = 1
 const VELOCITY_MULTIPLIER: float = 12.0
 var shooting: bool = false
 var sinking: bool = false
@@ -132,3 +132,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 			line.show()
 			shooting = true
 			activate.emit()
+
+
+func _on_body_entered(body: Node) -> void:
+	AudioManager.report_collision(self, body)
