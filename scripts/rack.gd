@@ -9,7 +9,6 @@ func _ready() -> void:
 		randomize()
 		var rands = range(1, 16)
 		rands.shuffle()
-		print(rands)
 		for i in range(15):
 			get_child(i).set_ball_number(rands[i])
 
@@ -22,3 +21,7 @@ func _process(delta: float) -> void:
 			child.get_node("Sprite2D").texture = load("res://assets/sprites/%d.png" % i)
 			i += 1
 		has_assigned_numbers = true
+
+
+func get_balls() -> Array[Node]:
+	return get_children()

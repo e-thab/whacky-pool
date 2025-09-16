@@ -41,11 +41,8 @@ polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 
 [node name="Table" parent="." instance=ExtResource("1_52dv5")]
 
-[node name="Ball" parent="." instance=ExtResource("3_4kfs5")]
+[node name="CueBall" parent="." instance=ExtResource("3_4kfs5")]
 position = Vector2(-138.18, 0)
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.995
 
 [node name="Rack" parent="." instance=ExtResource("4_ug4bl")]
 position = Vector2(169.2, 0)

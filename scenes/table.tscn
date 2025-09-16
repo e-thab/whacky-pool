@@ -1,10 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dudvkl4ve2be8"]
+[gd_scene load_steps=9 format=3 uid="uid://dudvkl4ve2be8"]
 
 [ext_resource type="Script" path="res://scripts/table.gd" id="1_gyr1b"]
 [ext_resource type="Texture2D" uid="uid://dyqclhapobikd" path="res://assets/sprites/table.png" id="1_uicjx"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kxksc"]
-rough = true
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_knbi3"]
 a = Vector2(-6, 20)
@@ -31,8 +28,8 @@ a = Vector2(-20, 6)
 b = Vector2(6, -20)
 
 [node name="Table" type="RigidBody2D"]
+input_pickable = true
 mass = 70.0
-physics_material_override = SubResource("PhysicsMaterial_kxksc")
 gravity_scale = 0.0
 continuous_cd = 1
 script = ExtResource("1_gyr1b")
