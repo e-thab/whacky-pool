@@ -31,6 +31,7 @@ b = Vector2(6, -20)
 input_pickable = true
 mass = 70.0
 gravity_scale = 0.0
+sleeping = true
 continuous_cd = 1
 script = ExtResource("1_gyr1b")
 

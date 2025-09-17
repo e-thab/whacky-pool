@@ -10,6 +10,7 @@ var cam_scale_before: float = 1.0
 #var cam_pos_before: Vector2 = Vector2.ZERO
 var resetting_camera: bool = false
 var currently_shooting: bool = false # True while shooting any ball
+var active_ball: Ball
 @onready var camera: Camera2D = $Camera2D
 @onready var cam_area: Area2D = $Camera2D/Area2D
 @onready var table: RigidBody2D = $Table
@@ -25,10 +26,17 @@ func _ready() -> void:
 	for ball in balls:
 		ball.activate.connect(_on_ball_activate)
 		ball.deactivate.connect(_on_ball_deactivate)
+	#$Rack.queue_free()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	#$Camera2D/UI/CollisionLabel.text = ""
+	#for i in range(len(AudioManager.ball_collisions)):
+		#if i < len(AudioManager.ball_collisions):
+			#$Camera2D/UI/CollisionLabel.text += "[" + AudioManager.ball_collisions[i][0].name + ", " + AudioManager.ball_collisions[i][1].name + "]\n"
+		#else:
+			#break
 	if currently_shooting:
 		return
 	if cam_area.overlaps_body(table) and not resetting_camera:
@@ -70,13 +78,15 @@ func within(a: float, b: float, t: float = 0.025) -> bool:
 	return a - b < t
 
 
-func _on_ball_activate() -> void:
+func _on_ball_activate(ball) -> void:
+	active_ball = ball
 	currently_shooting = true
 	cam_scale_before = camera.scale.x
 	target_scale = camera.scale.x
 
 
 func _on_ball_deactivate() -> void:
+	active_ball = null
 	currently_shooting = false
 	target_scale = cam_scale_before
 
@@ -87,6 +97,7 @@ func _on_table_mouse_entered() -> void:
 
 
 func _on_table_sleeping_state_changed() -> void:
+	#print('table sleep changed to ', table.sleeping)
 	if table.sleeping and not currently_shooting:
 		target_pos = table.position
 		target_rot = table.rotation

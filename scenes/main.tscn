@@ -1,14 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=5 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
 [ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="3_4kfs5"]
-[ext_resource type="Texture2D" uid="uid://cl8u2chmmxe0t" path="res://assets/sprites/1.png" id="4_3gbl8"]
 [ext_resource type="PackedScene" uid="uid://dx6vq21eonegw" path="res://scenes/rack.tscn" id="4_ug4bl"]
-[ext_resource type="Texture2D" uid="uid://d0jur8s4utk1a" path="res://assets/sprites/2.png" id="5_lsm6v"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
+
+[node name="Table" parent="." instance=ExtResource("1_52dv5")]
+
+[node name="CueBall" parent="." instance=ExtResource("3_4kfs5")]
+position = Vector2(-138.18, 0)
+
+[node name="Rack" parent="." instance=ExtResource("4_ug4bl")]
+position = Vector2(169.2, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 ignore_rotation = false
@@ -26,33 +32,29 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Camera2D/UI"]
-visible = false
+[node name="CollisionLabel" type="Label" parent="Camera2D/UI"]
 layout_mode = 0
 offset_left = 23.0
 offset_top = 22.0
-offset_right = 63.0
-offset_bottom = 45.0
+offset_right = 1137.0
+offset_bottom = 148.0
 text = "ASDF"
+autowrap_mode = 3
+
+[node name="DebugLabel" type="Label" parent="Camera2D/UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.0
+offset_right = 93.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "asdf"
+horizontal_alignment = 1
 
 [node name="Area2D" type="Area2D" parent="Camera2D"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Camera2D/Area2D"]
 build_mode = 1
 polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
-
-[node name="Table" parent="." instance=ExtResource("1_52dv5")]
-
-[node name="CueBall" parent="." instance=ExtResource("3_4kfs5")]
-position = Vector2(-138.18, 0)
-
-[node name="Ball1" parent="." instance=ExtResource("3_4kfs5")]
-position = Vector2(-85, -31)
-sprite_texture = ExtResource("4_3gbl8")
-
-[node name="Ball2" parent="." instance=ExtResource("3_4kfs5")]
-position = Vector2(-30, -66)
-sprite_texture = ExtResource("5_lsm6v")
-
-[node name="Rack" parent="." instance=ExtResource("4_ug4bl")]
-position = Vector2(169.2, 0)

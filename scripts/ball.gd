@@ -1,7 +1,7 @@
 class_name Ball
 extends RigidBody2D
 
-signal activate
+signal activate(ball)
 signal deactivate
 const ACTIVE_BALL_Z: int = 13
 const ACTIVE_LINE_Z: int = 12
@@ -106,6 +106,7 @@ func shoot() -> void:
 
 
 func sink(sink_pocket: Node2D) -> void:
+	$Pocket.play()
 	sinking = true
 	sinking_pocket = sink_pocket
 	collision_shape.set_deferred("disabled", true)
@@ -113,6 +114,22 @@ func sink(sink_pocket: Node2D) -> void:
 
 func set_ball_number(n: int) -> void:
 	sprite.texture = load("res://assets/sprites/%d.png" % n)
+
+
+func play_sound(sound: int, db_scale: float = 1.0):
+	match sound:
+		AudioManager.Sound.BALL_HIT:
+			var db_variance: float = 8
+			print('ball hit at db scale ', db_variance * (2 * db_scale - 1))
+			$BallHitSoft.volume_db = db_variance * (2 * db_scale - 1)
+			$BallHitSoft.pitch_scale = randf_range(0.8, 1.2)
+			$BallHitSoft.play()
+		AudioManager.Sound.TABLE_HIT:
+			var db_variance: float = 5
+			print('table hit at db scale ', db_variance * (2 * db_scale - 1))
+			$TableHit.volume_db = db_variance * (2 * db_scale - 1)
+			$TableHit.pitch_scale = randf_range(0.6, 1.0)
+			$TableHit.play()
 
 
 func _on_mouse_entered() -> void:
@@ -131,7 +148,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			line.show()
 			shooting = true
-			activate.emit()
+			activate.emit(self)
 
 
 func _on_body_entered(body: Node) -> void:
