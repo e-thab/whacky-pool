@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=6 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
 [ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="3_4kfs5"]
 [ext_resource type="PackedScene" uid="uid://dx6vq21eonegw" path="res://scenes/rack.tscn" id="4_ug4bl"]
+[ext_resource type="AudioStream" uid="uid://cuvenngacpvuo" path="res://assets/sounds/8bit Bossa.mp3" id="5_ocblr"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
@@ -58,3 +59,9 @@ horizontal_alignment = 1
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Camera2D/Area2D"]
 build_mode = 1
 polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
+
+[node name="8BitBossa" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ocblr")
+volume_db = -7.0
+autoplay = true
+bus = &"Music"

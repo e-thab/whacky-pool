@@ -1,7 +1,6 @@
 extends RigidBody2D
 
-const MAX_SINK_VELOCITY: float = 200.0
-
+const MAX_SINK_VELOCITY: float = 250.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -10,6 +9,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	# ball can get stuck floating on a pocket. regularly check if ball overlapping
+	 #with pocket area should sink?
 	pass
 
 

@@ -31,25 +31,23 @@ func _process(delta: float) -> void:
 
 
 func report_collision(body1: RigidBody2D, body2: RigidBody2D):
-	## TODO: use linear interpolation instead of quiet/mid/loud db scale
 	if elapsed < 1: return
-	#print('collision: ', body1.name, ' -> ', body2.name, ' at ', elapsed)
 	var db_scale: float = 1
+	var high_v: float = 800.0
+	var min_v: float = 9.0
 	
 	if body1.name == "Table" or body2.name == "Table":
+		#print('collision: ', body1.name, ' -> ', body2.name, ' LINEAR v = ', max(body1.linear_velocity.length(), body2.linear_velocity.length()))
 		var ball: Ball
 		if body1.name == "Table":
 			ball = body2
 		else:
 			ball = body1
 		
-		if ball.linear_velocity.length() > 220:
-			db_scale = 1
-		elif ball.linear_velocity.length() > 40:
-			db_scale = 0
-		elif ball.linear_velocity.length() > 9:
-			db_scale = 0.6
-		ball.play_sound(Sound.TABLE_HIT, db_scale)
+		var velocity = ball.last_velocity
+		if velocity >= min_v:
+			db_scale = (velocity - min_v) / (high_v - min_v)
+			ball.play_sound(Sound.TABLE_HIT, db_scale)
 		return
 	
 	for collision in ball_collisions:
@@ -57,13 +55,12 @@ func report_collision(body1: RigidBody2D, body2: RigidBody2D):
 			ball_collisions.erase(collision)
 			return
 	
+	print('collision: ', body1, ' -> ', body2, ' last_v = ', max(body1.last_velocity, body2.last_velocity))
+	
 	ball_collisions.append([body1, body2])
-	var velocity = max(body1.linear_velocity.length(), body2.linear_velocity.length())
 	var ball: Ball = body1
-	if velocity > 220:
-		db_scale = 1
-	elif velocity > 40:
-		db_scale = 0
-	elif velocity > 9:
-		db_scale = 0.6
-	ball.play_sound(Sound.BALL_HIT, db_scale)
+	var velocity: float = max(body1.last_velocity, body2.last_velocity)
+	
+	if velocity >= min_v:
+		db_scale = (velocity - min_v) / (high_v - min_v)
+		ball.play_sound(Sound.BALL_HIT, db_scale)

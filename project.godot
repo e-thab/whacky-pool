@@ -8,12 +8,20 @@
 
 config_version=5
 
+[animation]
+
+warnings/quality/use_debanding=false
+
 [application]
 
 config/name="Whacky Pool"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://assets/default_bus_layout.tres"
 
 [autoload]
 
@@ -29,6 +37,7 @@ window/stretch/mode="canvas_items"
 2d/sleep_threshold_linear=6.0
 2d/sleep_threshold_angular=1.0
 2d/time_before_sleep=0.1
+2d/solver/solver_iterations=32
 
 [rendering]
 

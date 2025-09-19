@@ -26,6 +26,7 @@ func _ready() -> void:
 	for ball in balls:
 		ball.activate.connect(_on_ball_activate)
 		ball.deactivate.connect(_on_ball_deactivate)
+		ball.custom_mouse_entered.connect(_on_ball_mouse_entered)
 	#$Rack.queue_free()
 
 
@@ -94,6 +95,11 @@ func _on_ball_deactivate() -> void:
 func _on_table_mouse_entered() -> void:
 	if currently_shooting:
 		target_scale = cam_scale_before
+
+
+func _on_ball_mouse_entered(ball: Ball) -> void:
+	if active_ball == null:
+		ball.show_highlight()
 
 
 func _on_table_sleeping_state_changed() -> void:

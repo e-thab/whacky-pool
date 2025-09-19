@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://cbq1lp6bi0muw"
-path="res://.godot/imported/pocket.wav-2fdcc062a6337ca7d3b4f6d19af0ffd2.sample"
+uid="uid://bsgc5indarxjb"
+path="res://.godot/imported/pocket_old.wav-d967c788d0e5b1322b304ec5b49df0ce.sample"
 
 [deps]
 
-source_file="res://assets/sounds/pocket.wav"
-dest_files=["res://.godot/imported/pocket.wav-2fdcc062a6337ca7d3b4f6d19af0ffd2.sample"]
+source_file="res://assets/sounds/pocket_old.wav"
+dest_files=["res://.godot/imported/pocket_old.wav-d967c788d0e5b1322b304ec5b49df0ce.sample"]
 
 [params]
 

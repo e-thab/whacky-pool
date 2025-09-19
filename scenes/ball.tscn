@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://assets/ball.gdshader" id="2_8nkny"]
 [ext_resource type="Texture2D" uid="uid://dhq1lpi6a6sot" path="res://assets/sprites/cue_ball.png" id="2_bgxxp"]
 [ext_resource type="Texture2D" uid="uid://bfndo7u7kjya0" path="res://assets/sprites/highlight.png" id="2_ww0t4"]
-[ext_resource type="AudioStream" uid="uid://bsgc5indarxjb" path="res://assets/sounds/pocket.wav" id="5_deo6c"]
+[ext_resource type="AudioStream" uid="uid://cbq1lp6bi0muw" path="res://assets/sounds/pocket.wav" id="5_deo6c"]
 [ext_resource type="AudioStream" uid="uid://c84pme1h1io0v" path="res://assets/sounds/ball_hit_soft_1.wav" id="6_ubbur"]
 [ext_resource type="AudioStream" uid="uid://cb2fw7vhefah3" path="res://assets/sounds/table_hit.wav" id="8_tctve"]
 
@@ -47,6 +47,7 @@ default_color = Color(1, 0, 1, 1)
 
 [node name="Highlight" type="Sprite2D" parent="."]
 visible = false
+self_modulate = Color(0, 1, 0.784314, 1)
 z_index = 11
 material = SubResource("ShaderMaterial_b0upl")
 scale = Vector2(0.25, 0.25)
@@ -63,24 +64,6 @@ shape = SubResource("CircleShape2D_2ejpu")
 [node name="Pocket" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_deo6c")
 volume_db = -4.0
-max_polyphony = 8
-bus = &"Effects"
-
-[node name="ShotQuiet" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_ubbur")
-volume_db = -4.0
-max_polyphony = 8
-bus = &"Effects"
-
-[node name="ShotMid" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_ubbur")
-volume_db = 4.0
-max_polyphony = 8
-bus = &"Effects"
-
-[node name="ShotLoud" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_ubbur")
-volume_db = 10.0
 max_polyphony = 8
 bus = &"Effects"
 
