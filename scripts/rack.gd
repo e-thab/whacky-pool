@@ -23,5 +23,8 @@ func _process(delta: float) -> void:
 		has_assigned_numbers = true
 
 
-func get_balls() -> Array[Node]:
-	return get_children()
+func get_balls() -> Array[Ball]:
+	var balls: Array[Ball]
+	for child in get_children():
+		balls.append(child)
+	return balls

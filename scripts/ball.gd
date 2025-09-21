@@ -3,6 +3,7 @@ extends RigidBody2D
 
 signal custom_mouse_entered(ball)
 signal activate(ball)
+signal ball_freed(ball)
 signal deactivate
 const HIGHLIGHT_COLOR: Color = Color.AQUA
 const ACTIVE_BALL_Z: int = 13
@@ -51,6 +52,7 @@ func _physics_process(delta: float) -> void:
 		global_position = lerp(global_position, sinking_pocket.global_position, delta * 20)
 	if sprite.scale.x <= 0.01:
 		queue_free()
+		ball_freed.emit(self)
 	last_velocity = linear_velocity.length()
 
 
@@ -137,19 +139,19 @@ func play_sound(sound: int, db_scale: float = 1.0):
 	match sound:
 		AudioManager.Sound.BALL_HIT:
 			var db_variance: float = 8
-			print('ball hit at db scale ', min(db_variance * (2 * db_scale - 1), 35))
+			#print('ball hit at db scale ', min(db_variance * (2 * db_scale - 1), 25))
 			$BallHitSoft.volume_db = min(db_variance * (2 * db_scale - 1), 35)
 			$BallHitSoft.pitch_scale = randf_range(0.8, 1.2)
 			$BallHitSoft.play()
 		AudioManager.Sound.TABLE_HIT:
 			var db_variance: float = 4
-			print('table hit at db scale ', min(db_variance * (2 * db_scale - 1), 25))
+			#print('table hit at db scale ', min(db_variance * (2 * db_scale - 1), 25))
 			$TableHit.volume_db = min(db_variance * (2 * db_scale - 1), 25)
 			$TableHit.pitch_scale = randf_range(0.1, 0.6)
 			$TableHit.play()
 		AudioManager.Sound.POCKET:
 			var db_variance: float = 4
-			print('pocket at db scale ', db_variance * (2 * db_scale - 1))
+			#print('pocket at db scale ', db_variance * (2 * db_scale - 1))
 			$Pocket.volume_db = db_variance * (2 * db_scale - 1)
 			$Pocket.pitch_scale = randf_range(0.8, 1.2)
 			$Pocket.play()

@@ -34,7 +34,7 @@ func report_collision(body1: RigidBody2D, body2: RigidBody2D):
 	if elapsed < 1: return
 	var db_scale: float = 1
 	var high_v: float = 800.0
-	var min_v: float = 9.0
+	var min_v: float = 12.0
 	
 	if body1.name == "Table" or body2.name == "Table":
 		#print('collision: ', body1.name, ' -> ', body2.name, ' LINEAR v = ', max(body1.linear_velocity.length(), body2.linear_velocity.length()))
@@ -55,8 +55,7 @@ func report_collision(body1: RigidBody2D, body2: RigidBody2D):
 			ball_collisions.erase(collision)
 			return
 	
-	print('collision: ', body1, ' -> ', body2, ' last_v = ', max(body1.last_velocity, body2.last_velocity))
-	
+	#print('collision: ', body1, ' -> ', body2, ' last_v = ', max(body1.last_velocity, body2.last_velocity))
 	ball_collisions.append([body1, body2])
 	var ball: Ball = body1
 	var velocity: float = max(body1.last_velocity, body2.last_velocity)
