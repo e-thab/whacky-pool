@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const MAX_SINK_VELOCITY: float = 250.0
+const MAX_SINK_VELOCITY: float = 350.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

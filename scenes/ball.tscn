@@ -21,7 +21,7 @@ radius = 43.0465
 
 [node name="Ball" type="RigidBody2D"]
 input_pickable = true
-mass = 10.0
+mass = 4.0
 physics_material_override = SubResource("PhysicsMaterial_50k6e")
 gravity_scale = 0.0
 continuous_cd = 1
@@ -69,10 +69,12 @@ bus = &"Effects"
 
 [node name="TableHit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_tctve")
+max_polyphony = 2
 bus = &"Effects"
 
 [node name="BallHitSoft" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_ubbur")
+max_polyphony = 8
 bus = &"Effects"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
