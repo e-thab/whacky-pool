@@ -13,8 +13,9 @@ const INACTIVE_BALL_Z: int = 3
 #const INACTIVE_HIGHLIGHT_Z: int = 1
 const VELOCITY_MULTIPLIER: float = 12.0
 
-var shooting: bool = false
-var sinking: bool = false
+var shooting := false
+var sinking := false
+var hovering := false
 var sinking_pocket: Node2D
 var ball_num: int = -1
 var shot_strength_multiplier: float = 1.0
@@ -25,6 +26,7 @@ var last_velocity: float = 0.0
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var highlight: Sprite2D = $Highlight
 @onready var line: Line2D = $Line2D
+@onready var projection_line: Line2D = $ProjectionLine
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
@@ -32,6 +34,7 @@ var last_velocity: float = 0.0
 func _ready() -> void:
 	sprite.texture = sprite_texture
 	line.z_index = ACTIVE_LINE_Z
+	projection_line.z_index = ACTIVE_LINE_Z
 	highlight.z_index = ACTIVE_HIGHLIGHT_Z
 	highlight.self_modulate = HIGHLIGHT_COLOR
 
@@ -48,7 +51,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if sinking:
 		sprite.rotate(PI/6)
-		sprite.scale *= 0.92
+		sprite.scale *= 0.86
 		global_position = lerp(global_position, sinking_pocket.global_position, delta * 20)
 	if sprite.scale.x <= 0.01:
 		queue_free()
@@ -61,13 +64,16 @@ func position_line() -> void:
 	var length = mouse_pos.length()
 	line.set_point_position(1, mouse_pos)
 	line.show()
+	projection_line.set_point_position(1, -get_local_mouse_position())
+	projection_line.show()
 	
-	var color = Color.WHITE
+	var color: Color
 	if length < 40:
-		# 0 strength shot (cancel): Black
-		color = Color.WHITE
+		# 0 strength shot (cancel): Gray
+		color = Color.DIM_GRAY
 		shot_strength_multiplier = 0
 		line.hide()
+		projection_line.hide()
 	elif length < 440:
 		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
 		color = Color(
@@ -99,9 +105,6 @@ func position_line() -> void:
 	
 	line.self_modulate = color
 	highlight.self_modulate = color
-	# debug
-	$ShotDebugLine.set_point_position(1, -get_local_mouse_position())
-	$ShotDebugLine.show()
 
 
 func shoot() -> void:
@@ -109,13 +112,14 @@ func shoot() -> void:
 	apply_central_impulse(dist * shot_strength_multiplier * VELOCITY_MULTIPLIER)
 	#set_axis_velocity(dist * shot_strength_multiplier * 3.0)
 	shooting = false
+	if not hovering:
+		highlight.hide()
+		sprite.z_index = INACTIVE_BALL_Z
 	deactivate.emit()
-	$ShotDebugLine.hide()
+	projection_line.hide()
 	line.hide()
-	highlight.hide()
 	line.self_modulate = Color.WHITE
 	highlight.self_modulate = HIGHLIGHT_COLOR
-	sprite.z_index = INACTIVE_BALL_Z
 
 
 func sink(sink_pocket: Node2D) -> void:
@@ -163,10 +167,12 @@ func _to_string() -> String:
 
 func _on_mouse_entered() -> void:
 	## Uses a signal so that main can decide to only highlight when there is no active ball
+	hovering = true
 	custom_mouse_entered.emit(self)
  
 
 func _on_mouse_exited() -> void:
+	hovering = false
 	if not shooting:
 		highlight.hide()
 		highlight.self_modulate = HIGHLIGHT_COLOR
@@ -183,3 +189,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	AudioManager.report_collision(self, body)
+
+
+func _on_screen_exited() -> void:
+	print('exit')

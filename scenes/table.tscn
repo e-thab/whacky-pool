@@ -83,8 +83,14 @@ position = Vector2(453.08, 233.12)
 shape = SubResource("SegmentShape2D_aixea")
 
 [connection signal="body_entered" from="PocketTopLeft" to="." method="_on_pocket_top_left_body_entered"]
+[connection signal="body_exited" from="PocketTopLeft" to="." method="_on_pocket_top_left_body_exited"]
 [connection signal="body_entered" from="PocketTopMiddle" to="." method="_on_pocket_top_middle_body_entered"]
+[connection signal="body_exited" from="PocketTopMiddle" to="." method="_on_pocket_top_middle_body_exited"]
 [connection signal="body_entered" from="PocketTopRight" to="." method="_on_pocket_top_right_body_entered"]
+[connection signal="body_exited" from="PocketTopRight" to="." method="_on_pocket_top_right_body_exited"]
 [connection signal="body_entered" from="PocketBottomLeft" to="." method="_on_pocket_bottom_left_body_entered"]
+[connection signal="body_exited" from="PocketBottomLeft" to="." method="_on_pocket_bottom_left_body_exited"]
 [connection signal="body_entered" from="PocketBottomMiddle" to="." method="_on_pocket_bottom_middle_body_entered"]
+[connection signal="body_exited" from="PocketBottomMiddle" to="." method="_on_pocket_bottom_middle_body_exited"]
 [connection signal="body_entered" from="PocketBottomRight" to="." method="_on_pocket_bottom_right_body_entered"]
+[connection signal="body_exited" from="PocketBottomRight" to="." method="_on_pocket_bottom_right_body_exited"]

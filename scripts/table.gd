@@ -1,23 +1,25 @@
 extends RigidBody2D
 
 const MAX_SINK_VELOCITY: float = 350.0
+var overlapping_pocket: Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	# ball can get stuck floating on a pocket. regularly check if ball overlapping
-	 #with pocket area should sink?
 	pass
 
 
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(delta: float) -> void:
+	for ball:Ball in overlapping_pocket:
+		if ball.linear_velocity.length() <= MAX_SINK_VELOCITY:
+			ball.sink(overlapping_pocket[ball])
+
+
 func start_sink(pocket: Node2D, ball: Ball):
-	if ball.linear_velocity.length() < MAX_SINK_VELOCITY:
+	if ball.linear_velocity.length() <= MAX_SINK_VELOCITY:
 		ball.sink(pocket)
-	print(ball.linear_velocity.length())
+	else:
+		overlapping_pocket[ball] = pocket
 
 
 func _on_pocket_top_left_body_entered(body: Node2D) -> void:
@@ -48,3 +50,27 @@ func _on_pocket_bottom_middle_body_entered(body: Node2D) -> void:
 func _on_pocket_bottom_right_body_entered(body: Node2D) -> void:
 	if body.has_method("sink"):
 		start_sink($PocketBottomRight, body)
+
+
+func _on_pocket_top_left_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
+
+
+func _on_pocket_top_middle_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
+
+
+func _on_pocket_top_right_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
+
+
+func _on_pocket_bottom_left_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
+
+
+func _on_pocket_bottom_middle_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
+
+
+func _on_pocket_bottom_right_body_exited(body: Node2D) -> void:
+	overlapping_pocket.erase(body)
