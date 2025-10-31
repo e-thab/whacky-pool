@@ -1,0 +1,10 @@
+[gd_resource type="StyleBoxFlat" format=3 uid="uid://djmjeekcjugos"]
+
+[resource]
+bg_color = Color(0.493749, 0.172993, 0.290729, 0.941176)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 12
+anti_aliasing_size = 0.5

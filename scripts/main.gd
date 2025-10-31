@@ -3,7 +3,11 @@ extends Node2D
 const ZOOM_SPEED := 3.0
 const POS_SPEED := 4.0
 const ROT_SPEED := 4.0
+const GEAR_ICON = preload("res://assets/sprites/gear.png")
+const MINUS_ICON = preload("res://assets/sprites/minus.png")
+const BUS_LAYOUT = preload("res://assets/bus_layout.tres")
 @export var wind := false # use wind?
+@export var show_shot_power := true
 var target_scale := 1.0
 var target_pos := Vector2.ZERO
 var target_rot := 0.0
@@ -17,10 +21,14 @@ var active_ball: Ball
 @onready var camera: Camera2D = $Camera2D
 @onready var cam_area: Area2D = $Camera2D/Area2D
 @onready var table: RigidBody2D = $Table
+@onready var settings_menu: PanelContainer = $Camera2D/UI/SettingsMenu
+@onready var power_label: Label = $Camera2D/UI/PowerLabel
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	AudioServer.set_bus_layout(BUS_LAYOUT)
 	table.sleeping_state_changed.connect(_on_table_sleeping_state_changed)
 	table.mouse_entered.connect(_on_table_mouse_entered)
 	$Parallax2D.position = table.position
@@ -33,13 +41,8 @@ func _ready() -> void:
 		ball.ball_freed.connect(_on_ball_freed)
 		ball.custom_mouse_entered.connect(_on_ball_mouse_entered)
 	
-	if wind:
-		var random_rot = randf_range(0.0, 2.0 * PI)
-		wind_dir = Vector2.UP.rotated(random_rot)
-		$Camera2D/UI/StaticWindLabel/WindArrow.rotation = random_rot
-		$Camera2D/UI/StaticWindLabel.show()
-	else:
-		$Camera2D/UI/StaticWindLabel.hide()
+	set_wind()
+	hide_settings()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,7 +54,10 @@ func _process(delta: float) -> void:
 		#else:
 			#break
 	if currently_shooting:
+		show_power()
 		return
+	power_label.hide()
+	
 	if cam_area.overlaps_body(table) and not resetting_camera:
 		target_scale += 0.01
 
@@ -126,8 +132,71 @@ func within(a: float, b: float, t: float = 0.025) -> bool:
 	return a - b < t
 
 
+func show_power() -> void:
+	if not show_shot_power:
+		return
+	
+	var power = active_ball.get_shot_power()
+	var color: Color
+	
+	power_label.text = str(int(power))
+	if power < 20:
+		# 0 strength shot (cancel): Gray
+		power_label.text = "0"
+		color = Color.DIM_GRAY
+	elif power < 440:
+		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
+		color = Color(
+			(power - 20) / (439 - 40),
+			1,
+			0
+		)
+	elif power < 840:
+		# Low-medium strength: Yellow(1,1,0) -> Orange(1,.5,0)
+		color = Color(
+			1,
+			1 - (power - 440) / ((839-440) * 2),
+			0
+		)
+	elif power < 1240:
+		# Medium-high strength: Orange(1,.5,0) -> Red(1,0,0)
+		color = Color(
+			1,
+			0.5 - (power - 840) / ((1239-840) * 2),
+			0
+		)
+	else:
+		# High strength: Red
+		color = Color.RED
+	
+	power_label.show()
+	#power_label.position = get_local_mouse_position() + Vector2(1152/2 + 10, 648/2 - 12)
+	#power_label.add_theme_color_override("font_color", color)
+	power_label.self_modulate = color
+
+
+func set_wind() -> void:
+	if wind:
+		var random_rot = randf_range(0.0, 2.0 * PI)
+		wind_dir = Vector2.UP.rotated(random_rot)
+		$Camera2D/UI/StaticWindLabel/WindArrow.rotation = random_rot
+		$Camera2D/UI/StaticWindLabel.show()
+	else:
+		$Camera2D/UI/StaticWindLabel.hide()
+
+
 func win() -> void:
 	$Table/WinLabel.show()
+
+
+func show_settings() -> void:
+	settings_menu.show()
+	$Camera2D/UI/ShowSettingsButton.icon = MINUS_ICON
+
+
+func hide_settings() -> void:
+	settings_menu.hide()
+	$Camera2D/UI/ShowSettingsButton.icon = GEAR_ICON
 
 
 func _on_ball_activate(ball) -> void:
@@ -141,6 +210,7 @@ func _on_ball_deactivate() -> void:
 	active_ball = null
 	currently_shooting = false
 	target_scale = cam_scale_before
+	power_label.hide()
 
 
 func _on_table_mouse_entered() -> void:
@@ -167,3 +237,41 @@ func _on_table_sleeping_state_changed() -> void:
 		target_scale = 1.0
 		resetting_camera = true
 		#print('setting cam')
+
+
+func _on_show_settings_button_pressed() -> void:
+	if settings_menu.visible:
+		hide_settings()
+	else:
+		show_settings()
+
+
+func _on_music_slider_value_changed(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Music")
+	var db = linear_to_db(value) * 0.85 - 28.9
+	#print('setting music to ', value, "% -- ", db)
+	AudioServer.set_bus_volume_db(bus_idx, db)
+	$Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer/PercentageLabel.text = str(value)
+
+
+func _on_effects_slider_value_changed(value: float) -> void:
+	var bus_idx = AudioServer.get_bus_index("Effects")
+	var db = linear_to_db(value) * 0.85 - 28.9
+	AudioServer.set_bus_volume_db(bus_idx, db)
+	$Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2/PercentageLabel.text = str(value)
+
+
+func _on_ui_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		# Stray left click, close settings menu
+		if settings_menu.visible:
+			hide_settings()
+
+
+func _on_wind_check_box_toggled(toggled_on: bool) -> void:
+	wind = toggled_on
+	set_wind()
+
+
+func _on_show_power_check_box_toggled(toggled_on: bool) -> void:
+	show_shot_power = toggled_on

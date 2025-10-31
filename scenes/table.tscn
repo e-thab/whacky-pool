@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dyqclhapobikd" path="res://assets/sprites/table.png" id="1_uicjx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3kkwg"]
+bounce = 1.0
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_knbi3"]
 a = Vector2(-6, 20)
@@ -36,6 +37,7 @@ physics_material_override = SubResource("PhysicsMaterial_3kkwg")
 gravity_scale = 0.0
 sleeping = true
 continuous_cd = 1
+max_contacts_reported = 3
 script = ExtResource("1_gyr1b")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=12 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
@@ -7,9 +7,27 @@
 [ext_resource type="Texture2D" uid="uid://cuoo7m1kndif3" path="res://assets/sprites/starfield.png" id="3_dac4k"]
 [ext_resource type="PackedScene" uid="uid://dx6vq21eonegw" path="res://scenes/rack.tscn" id="4_ug4bl"]
 [ext_resource type="AudioStream" uid="uid://cuvenngacpvuo" path="res://assets/sounds/8bit Bossa.mp3" id="5_ocblr"]
+[ext_resource type="StyleBox" uid="uid://djmjeekcjugos" path="res://assets/ui_style_box.tres" id="7_w4exi"]
+[ext_resource type="Texture2D" uid="uid://bniw8v5fpwsap" path="res://assets/sprites/gear.png" id="8_fyssj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yu7u0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_atnu6"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+z_index = -100
+repeat_size = Vector2(4096, 4096)
+repeat_times = 4
+
+[node name="Background" type="Sprite2D" parent="Parallax2D"]
+scale = Vector2(256, 256)
+texture = ExtResource("2_k8mdp")
+
+[node name="Starfield" type="Sprite2D" parent="Parallax2D"]
+texture = ExtResource("3_dac4k")
 
 [node name="Table" parent="." instance=ExtResource("1_52dv5")]
 
@@ -41,6 +59,7 @@ position = Vector2(169.2, 0)
 ignore_rotation = false
 
 [node name="UI" type="Control" parent="Camera2D"]
+z_index = 100
 layout_mode = 3
 anchor_left = 0.5
 anchor_right = 0.5
@@ -97,25 +116,161 @@ theme_override_font_sizes/font_size = 50
 text = "↟"
 horizontal_alignment = 1
 
+[node name="SettingsMenu" type="PanelContainer" parent="Camera2D/UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -376.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 283.0
+grow_horizontal = 0
+theme_override_styles/panel = ExtResource("7_w4exi")
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera2D/UI/SettingsMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/UI/SettingsMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="AudioLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Volume"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MusicHBoxContainer" type="HBoxContainer" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CategoryLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer"]
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Music"
+vertical_alignment = 1
+
+[node name="MusicSlider" type="HSlider" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 50.0
+
+[node name="PercentageLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "50
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectsHBoxContainer2" type="HBoxContainer" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CategoryLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2"]
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Effects"
+vertical_alignment = 1
+
+[node name="EffectsSlider" type="HSlider" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 50.0
+
+[node name="PercentageLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+theme_override_styles/separator = SubResource("StyleBoxEmpty_yu7u0")
+
+[node name="GameLabel" type="Label" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Game"
+vertical_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ShowPowerCheckBox" type="CheckBox" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Show shot power"
+
+[node name="VSeparator" type="VSeparator" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+theme_override_styles/separator = SubResource("StyleBoxEmpty_atnu6")
+
+[node name="WindCheckBox" type="CheckBox" parent="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Use wind"
+
+[node name="ShowSettingsButton" type="Button" parent="Camera2D/UI"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+focus_mode = 0
+theme_override_styles/normal = ExtResource("7_w4exi")
+icon = ExtResource("8_fyssj")
+flat = true
+expand_icon = true
+
+[node name="PowerLabel" type="Label" parent="Camera2D/UI"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 58.0
+offset_bottom = 49.0
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "240"
+
 [node name="Area2D" type="Area2D" parent="Camera2D"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Camera2D/Area2D"]
 build_mode = 1
 polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 
-[node name="Parallax2D" type="Parallax2D" parent="."]
-z_index = -100
-repeat_size = Vector2(4096, 4096)
-repeat_times = 4
-
-[node name="Background" type="Sprite2D" parent="Parallax2D"]
-scale = Vector2(256, 256)
-texture = ExtResource("2_k8mdp")
-
-[node name="Starfield" type="Sprite2D" parent="Parallax2D"]
-texture = ExtResource("3_dac4k")
-
 [node name="8BitBossa" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ocblr")
-volume_db = -7.0
 autoplay = true
+bus = &"Music"
+
+[connection signal="gui_input" from="Camera2D/UI" to="." method="_on_ui_gui_input"]
+[connection signal="value_changed" from="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2/EffectsSlider" to="." method="_on_effects_slider_value_changed"]
+[connection signal="toggled" from="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/HBoxContainer/ShowPowerCheckBox" to="." method="_on_show_power_check_box_toggled"]
+[connection signal="toggled" from="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/HBoxContainer/WindCheckBox" to="." method="_on_wind_check_box_toggled"]
+[connection signal="pressed" from="Camera2D/UI/ShowSettingsButton" to="." method="_on_show_settings_button_pressed"]

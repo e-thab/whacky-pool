@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbgh1pnj2jgah"]
+
+[ext_resource type="PackedScene" uid="uid://cv7y242bw66p5" path="res://scenes/ball.tscn" id="1_2hbtw"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Ball" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(349, 133)
+
+[node name="Ball26" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(349, 202)
+
+[node name="Ball27" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(349, 346)
+
+[node name="Ball28" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(349, 416)
+
+[node name="Ball29" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(369, 416)
+
+[node name="Ball30" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(349, 491)
+
+[node name="Ball31" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(370, 491)
+
+[node name="Ball2" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(724, 133)
+
+[node name="Ball3" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(704, 133)
+
+[node name="Ball4" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(684, 133)
+
+[node name="Ball5" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(784, 133)
+
+[node name="Ball6" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(764, 133)
+
+[node name="Ball7" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(744, 133)
+
+[node name="Ball8" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(844, 133)
+
+[node name="Ball9" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(824, 133)
+
+[node name="Ball10" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(804, 133)
+
+[node name="Ball11" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(904, 133)
+
+[node name="Ball12" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(884, 133)
+
+[node name="Ball13" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(864, 133)
+
+[node name="Ball14" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(724, 202)
+
+[node name="Ball15" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(703, 202)
+
+[node name="Ball16" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(682, 202)
+
+[node name="Ball17" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(787, 202)
+
+[node name="Ball18" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(766, 202)
+
+[node name="Ball19" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(745, 202)
+
+[node name="Ball20" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(850, 202)
+
+[node name="Ball21" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(829, 202)
+
+[node name="Ball22" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(808, 202)
+
+[node name="Ball23" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(913, 202)
+
+[node name="Ball24" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(892, 202)
+
+[node name="Ball25" parent="." instance=ExtResource("1_2hbtw")]
+position = Vector2(871, 202)

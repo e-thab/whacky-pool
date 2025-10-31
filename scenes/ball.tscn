@@ -9,8 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cb2fw7vhefah3" path="res://assets/sounds/table_hit.wav" id="8_tctve"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_50k6e"]
-rough = true
-bounce = 0.6
+bounce = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b0upl"]
 shader = ExtResource("2_8nkny")
@@ -28,7 +27,6 @@ continuous_cd = 1
 contact_monitor = true
 max_contacts_reported = 3
 script = ExtResource("1_rlixw")
-sprite_texture = ExtResource("2_bgxxp")
 metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

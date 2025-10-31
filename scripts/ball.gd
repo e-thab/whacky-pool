@@ -17,12 +17,12 @@ var shooting := false
 var sinking := false
 var hovering := false
 var sinking_pocket: Node2D
-var ball_num: int = -1
-var shot_strength_multiplier: float = 1.0
+var ball_num := -1
+var shot_strength_multiplier := 1.0
 # Stores linear_velocity.length() from the previous physics tick
-var last_velocity: float = 0.0
+var last_velocity := 0.0
 
-@export var sprite_texture: Texture2D = load("res://assets/sprites/cue_ball.png")
+@export var sprite_texture: Texture2D = preload("res://assets/sprites/cue_ball.png")
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var highlight: Sprite2D = $Highlight
 @onready var line: Line2D = $Line2D
@@ -59,16 +59,20 @@ func _physics_process(delta: float) -> void:
 	last_velocity = linear_velocity.length()
 
 
+func get_shot_power() -> float:
+	return get_local_mouse_position().length()
+
+
 func position_line() -> void:
 	var mouse_pos = get_local_mouse_position()
 	var length = mouse_pos.length()
 	line.set_point_position(1, mouse_pos)
 	line.show()
-	projection_line.set_point_position(1, -get_local_mouse_position())
+	projection_line.set_point_position(1, -mouse_pos)
 	projection_line.show()
 	
 	var color: Color
-	if length < 40:
+	if length < 20:
 		# 0 strength shot (cancel): Gray
 		color = Color.DIM_GRAY
 		shot_strength_multiplier = 0
@@ -77,7 +81,7 @@ func position_line() -> void:
 	elif length < 440:
 		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
 		color = Color(
-			(length - 40) / (439 - 40),
+			(length - 20) / (439 - 40),
 			1,
 			0
 		)
