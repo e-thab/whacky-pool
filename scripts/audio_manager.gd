@@ -35,16 +35,17 @@ func report_collision(body1: RigidBody2D, body2: RigidBody2D):
 	var db_scale: float = 1
 	var high_v: float = 800.0
 	var min_v: float = 12.0
+	var velocity: float
+	var ball: Ball
 	
 	if body1.name == "Table" or body2.name == "Table":
 		#print('collision: ', body1.name, ' -> ', body2.name, ' LINEAR v = ', max(body1.linear_velocity.length(), body2.linear_velocity.length()))
-		var ball: Ball
 		if body1.name == "Table":
 			ball = body2
 		else:
 			ball = body1
 		
-		var velocity = ball.last_velocity
+		velocity = ball.last_velocity
 		if velocity >= min_v:
 			db_scale = (velocity - min_v) / (high_v - min_v)
 			ball.play_sound(Sound.TABLE_HIT, db_scale)
@@ -57,8 +58,8 @@ func report_collision(body1: RigidBody2D, body2: RigidBody2D):
 	
 	#print('collision: ', body1, ' -> ', body2, ' last_v = ', max(body1.last_velocity, body2.last_velocity))
 	ball_collisions.append([body1, body2])
-	var ball: Ball = body1
-	var velocity: float = max(body1.last_velocity, body2.last_velocity)
+	ball = body1
+	velocity = max(body1.last_velocity, body2.last_velocity)
 	
 	if velocity >= min_v:
 		db_scale = (velocity - min_v) / (high_v - min_v)

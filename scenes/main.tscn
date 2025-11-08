@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=15 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
@@ -9,10 +9,16 @@
 [ext_resource type="AudioStream" uid="uid://cuvenngacpvuo" path="res://assets/sounds/8bit Bossa.mp3" id="5_ocblr"]
 [ext_resource type="StyleBox" uid="uid://djmjeekcjugos" path="res://assets/ui_style_box.tres" id="7_w4exi"]
 [ext_resource type="Texture2D" uid="uid://bniw8v5fpwsap" path="res://assets/sprites/gear.png" id="8_fyssj"]
+[ext_resource type="Script" path="res://scenes/active_ball_position.gd" id="10_0xumc"]
+[ext_resource type="Shape2D" uid="uid://bx3ihooh5gg54" path="res://assets/ball_shape.tres" id="11_v6wwf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yu7u0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_atnu6"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_uds4d"]
+radius = 10.15
+height = 20.3
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0up62")
@@ -265,8 +271,21 @@ polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 
 [node name="8BitBossa" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ocblr")
-autoplay = true
 bus = &"Music"
+
+[node name="ActiveBallPosition" type="Marker2D" parent="."]
+script = ExtResource("10_0xumc")
+
+[node name="TestProjectile" type="CharacterBody2D" parent="ActiveBallPosition"]
+collision_layer = 4
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="ActiveBallPosition/TestProjectile"]
+self_modulate = Color(1, 0, 1, 1)
+position = Vector2(0, -9.53674e-07)
+mesh = SubResource("SphereMesh_uds4d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActiveBallPosition/TestProjectile"]
+shape = ExtResource("11_v6wwf")
 
 [connection signal="gui_input" from="Camera2D/UI" to="." method="_on_ui_gui_input"]
 [connection signal="value_changed" from="Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/MusicHBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]

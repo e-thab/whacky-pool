@@ -21,7 +21,7 @@ config/icon="res://icon.svg"
 
 [audio]
 
-buses/default_bus_layout=""
+buses/default_bus_layout="res://assets/master_bus_layout.tres"
 
 [autoload]
 
@@ -33,6 +33,7 @@ window/stretch/mode="canvas_items"
 
 [physics]
 
+2d/default_gravity=0.0
 2d/default_linear_damp=1.0
 2d/sleep_threshold_linear=6.0
 2d/sleep_threshold_angular=1.0

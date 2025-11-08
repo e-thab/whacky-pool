@@ -26,7 +26,7 @@ var last_velocity := 0.0
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var highlight: Sprite2D = $Highlight
 @onready var line: Line2D = $Line2D
-@onready var projection_line: Line2D = $ProjectionLine
+#@onready var projection_line: Line2D = $ProjectionLine
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
@@ -34,7 +34,7 @@ var last_velocity := 0.0
 func _ready() -> void:
 	sprite.texture = sprite_texture
 	line.z_index = ACTIVE_LINE_Z
-	projection_line.z_index = ACTIVE_LINE_Z
+	#projection_line.z_index = ACTIVE_LINE_Z
 	highlight.z_index = ACTIVE_HIGHLIGHT_Z
 	highlight.self_modulate = HIGHLIGHT_COLOR
 
@@ -56,7 +56,27 @@ func _physics_process(delta: float) -> void:
 	if sprite.scale.x <= 0.01:
 		queue_free()
 		ball_freed.emit(self)
-	last_velocity = linear_velocity.length()
+		
+	var v = linear_velocity.length()
+	if v < PhysicsServer2D.SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD and v < last_velocity and not sleeping:
+		sleeping = true
+		sleeping_state_changed.emit()
+	elif v >= PhysicsServer2D.SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD:
+		sleeping = false
+		sleeping_state_changed.emit()
+	last_velocity = v
+
+
+func set_active() -> void:
+	activate.emit(self)
+	set_collision_layer_value(1, false)
+	set_collision_layer_value(2, true)
+
+
+func set_inactive() -> void:
+	deactivate.emit()
+	set_collision_layer_value(1, true)
+	set_collision_layer_value(2, false)
 
 
 func get_shot_power() -> float:
@@ -68,8 +88,8 @@ func position_line() -> void:
 	var length = mouse_pos.length()
 	line.set_point_position(1, mouse_pos)
 	line.show()
-	projection_line.set_point_position(1, -mouse_pos)
-	projection_line.show()
+	#projection_line.set_point_position(1, -mouse_pos)
+	#projection_line.show()
 	
 	var color: Color
 	if length < 20:
@@ -77,7 +97,7 @@ func position_line() -> void:
 		color = Color.DIM_GRAY
 		shot_strength_multiplier = 0
 		line.hide()
-		projection_line.hide()
+		#projection_line.hide()
 	elif length < 440:
 		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
 		color = Color(
@@ -119,8 +139,8 @@ func shoot() -> void:
 	if not hovering:
 		highlight.hide()
 		sprite.z_index = INACTIVE_BALL_Z
-	deactivate.emit()
-	projection_line.hide()
+	set_inactive()
+	#projection_line.hide()
 	line.hide()
 	line.self_modulate = Color.WHITE
 	highlight.self_modulate = HIGHLIGHT_COLOR
@@ -188,11 +208,12 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			line.show()
 			shooting = true
-			activate.emit(self)
+			set_active()
 
 
 func _on_body_entered(body: Node) -> void:
-	AudioManager.report_collision(self, body)
+	if body is Ball or body is Table:
+		AudioManager.report_collision(self, body)
 
 
 func _on_screen_exited() -> void:

@@ -5,7 +5,7 @@ const POS_SPEED := 4.0
 const ROT_SPEED := 4.0
 const GEAR_ICON = preload("res://assets/sprites/gear.png")
 const MINUS_ICON = preload("res://assets/sprites/minus.png")
-const BUS_LAYOUT = preload("res://assets/bus_layout.tres")
+#const BUS_LAYOUT = preload("res://assets/bus_layout.tres")
 @export var wind := false # use wind?
 @export var show_shot_power := true
 var target_scale := 1.0
@@ -23,12 +23,12 @@ var active_ball: Ball
 @onready var table: RigidBody2D = $Table
 @onready var settings_menu: PanelContainer = $Camera2D/UI/SettingsMenu
 @onready var power_label: Label = $Camera2D/UI/PowerLabel
-
+@onready var active_ball_position: Marker2D = $ActiveBallPosition
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	AudioServer.set_bus_layout(BUS_LAYOUT)
+	#AudioServer.set_bus_layout(BUS_LAYOUT)
 	table.sleeping_state_changed.connect(_on_table_sleeping_state_changed)
 	table.mouse_entered.connect(_on_table_mouse_entered)
 	$Parallax2D.position = table.position
@@ -43,6 +43,11 @@ func _ready() -> void:
 	
 	set_wind()
 	hide_settings()
+
+
+#func _draw() -> void:
+	#draw_line_global(Vector2.ZERO, Vector2(250, 250), Color.RED, 5)
+	#update_trajectory()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,6 +69,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if currently_shooting:
+		active_ball_position.global_position = active_ball.global_position
+		
 		var mouse_pos = get_viewport().get_mouse_position()
 		var screen_margin = 30
 		## Previous cam scale logic: just increase target scale when cursor is within edge margin
@@ -139,10 +146,12 @@ func show_power() -> void:
 	var power = active_ball.get_shot_power()
 	var color: Color
 	
+	active_ball_position.show_trajectory = true
 	power_label.text = str(int(power))
 	if power < 20:
 		# 0 strength shot (cancel): Gray
 		power_label.text = "0"
+		active_ball_position.show_trajectory = false
 		color = Color.DIM_GRAY
 	elif power < 440:
 		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
@@ -202,6 +211,7 @@ func hide_settings() -> void:
 func _on_ball_activate(ball) -> void:
 	active_ball = ball
 	currently_shooting = true
+	active_ball_position.show_trajectory = true
 	cam_scale_before = camera.scale.x
 	target_scale = camera.scale.x
 
@@ -209,6 +219,7 @@ func _on_ball_activate(ball) -> void:
 func _on_ball_deactivate() -> void:
 	active_ball = null
 	currently_shooting = false
+	active_ball_position.show_trajectory = false
 	target_scale = cam_scale_before
 	power_label.hide()
 
@@ -257,6 +268,7 @@ func _on_music_slider_value_changed(value: float) -> void:
 func _on_effects_slider_value_changed(value: float) -> void:
 	var bus_idx = AudioServer.get_bus_index("Effects")
 	var db = linear_to_db(value) * 0.85 - 28.9
+	#print('setting effects to ', value, "% -- ", db)
 	AudioServer.set_bus_volume_db(bus_idx, db)
 	$Camera2D/UI/SettingsMenu/MarginContainer/VBoxContainer/EffectsHBoxContainer2/PercentageLabel.text = str(value)
 

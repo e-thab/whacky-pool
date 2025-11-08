@@ -1,7 +1,9 @@
+class_name Table
 extends RigidBody2D
 
 const MAX_SINK_VELOCITY: float = 350.0
 var overlapping_pocket: Dictionary
+var last_velocity := 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,6 +15,18 @@ func _physics_process(delta: float) -> void:
 	for ball:Ball in overlapping_pocket:
 		if ball.linear_velocity.length() <= MAX_SINK_VELOCITY:
 			ball.sink(overlapping_pocket[ball])
+	
+	# Using a manual sleep implementation because the balls behave more nicely without can_sleep,
+	# and the balls being unable to sleep was preventing the table from sleeping as well
+	var v = linear_velocity.length()
+	if v < PhysicsServer2D.SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD and v < last_velocity and not sleeping:
+		print('sleep')
+		sleeping = true
+		sleeping_state_changed.emit()
+	elif v >= PhysicsServer2D.SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD:
+		sleeping = false
+		sleeping_state_changed.emit()
+	last_velocity = v
 
 
 func start_sink(pocket: Node2D, ball: Ball):
