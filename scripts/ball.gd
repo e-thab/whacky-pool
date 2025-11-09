@@ -16,7 +16,7 @@ const VELOCITY_MULTIPLIER: float = 12.0
 var shooting := false
 var sinking := false
 var hovering := false
-var sinking_pocket: Node2D
+var sinking_pos: Vector2
 var ball_num := -1
 var shot_strength_multiplier := 1.0
 # Stores linear_velocity.length() from the previous physics tick
@@ -26,13 +26,13 @@ var last_velocity := 0.0
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var highlight: Sprite2D = $Highlight
 @onready var line: Line2D = $Line2D
-#@onready var projection_line: Line2D = $ProjectionLine
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	sprite.texture = sprite_texture
+	sprite.z_index = INACTIVE_BALL_Z
 	line.z_index = ACTIVE_LINE_Z
 	#projection_line.z_index = ACTIVE_LINE_Z
 	highlight.z_index = ACTIVE_HIGHLIGHT_Z
@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	if sinking:
 		sprite.rotate(PI/6)
 		sprite.scale *= 0.86
-		global_position = lerp(global_position, sinking_pocket.global_position, delta * 20)
+		global_position = lerp(global_position, sinking_pos, delta * 20)
 	if sprite.scale.x <= 0.01:
 		queue_free()
 		ball_freed.emit(self)
@@ -67,14 +67,36 @@ func _physics_process(delta: float) -> void:
 	last_velocity = v
 
 
+#func is_off_table(table_area: Area2D) -> bool:
+	#if not $VisibleOnScreenNotifier2D.is_on_screen():
+		#return false
+	
+	#return (
+		#global_position.x <= table_position.x - 490
+		#or global_position.x >= table_position.x + 490
+		#or global_position.y <= table_position.y - 275
+		#or global_position.y >= table_position.y + 275
+	#)
+
+
 func set_active() -> void:
 	activate.emit(self)
-	set_collision_layer_value(1, false)
-	set_collision_layer_value(2, true)
+	set_active_collision_layer()
 
 
 func set_inactive() -> void:
 	deactivate.emit()
+	set_inactive_collision_layer()
+
+
+func set_active_collision_layer() -> void:
+	## Move ball to 'active' collision layer (2) so that projection does not interact
+	set_collision_layer_value(1, false)
+	set_collision_layer_value(2, true)
+
+
+func set_inactive_collision_layer() -> void:
+	## Move ball back to main collision layer (1)
 	set_collision_layer_value(1, true)
 	set_collision_layer_value(2, false)
 
@@ -146,10 +168,10 @@ func shoot() -> void:
 	highlight.self_modulate = HIGHLIGHT_COLOR
 
 
-func sink(sink_pocket: Node2D) -> void:
+func sink(pocket_pos: Vector2) -> void:
 	play_sound(AudioManager.Sound.POCKET)
 	sinking = true
-	sinking_pocket = sink_pocket
+	sinking_pos = pocket_pos
 	collision_shape.set_deferred("disabled", true)
 
 
@@ -217,4 +239,5 @@ func _on_body_entered(body: Node) -> void:
 
 
 func _on_screen_exited() -> void:
-	print('exit')
+	#print(self, ': exit')
+	pass

@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dudvkl4ve2be8"]
+[gd_scene load_steps=11 format=3 uid="uid://dudvkl4ve2be8"]
 
 [ext_resource type="Script" path="res://scripts/table.gd" id="1_gyr1b"]
 [ext_resource type="Texture2D" uid="uid://dyqclhapobikd" path="res://assets/sprites/table.png" id="1_uicjx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3kkwg"]
 bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iwef5"]
+size = Vector2(1004, 564)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_knbi3"]
 a = Vector2(-6, 20)
@@ -39,6 +42,13 @@ can_sleep = false
 continuous_cd = 1
 max_contacts_reported = 3
 script = ExtResource("1_gyr1b")
+
+[node name="TableArea" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TableArea"]
+shape = SubResource("RectangleShape2D_iwef5")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.235, 0.235)
@@ -84,6 +94,7 @@ position = Vector2(453.08, 233.12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PocketBottomRight"]
 shape = SubResource("SegmentShape2D_aixea")
 
+[connection signal="body_exited" from="TableArea" to="." method="_on_table_area_body_exited"]
 [connection signal="body_entered" from="PocketTopLeft" to="." method="_on_pocket_top_left_body_entered"]
 [connection signal="body_exited" from="PocketTopLeft" to="." method="_on_pocket_top_left_body_exited"]
 [connection signal="body_entered" from="PocketTopMiddle" to="." method="_on_pocket_top_middle_body_entered"]

@@ -23,7 +23,7 @@ var active_ball: Ball
 @onready var table: RigidBody2D = $Table
 @onready var settings_menu: PanelContainer = $Camera2D/UI/SettingsMenu
 @onready var power_label: Label = $Camera2D/UI/PowerLabel
-@onready var active_ball_position: Marker2D = $ActiveBallPosition
+@onready var projection_line: Node2D = $ProjectionLine
 
 
 # Called when the node enters the scene tree for the first time.
@@ -41,13 +41,13 @@ func _ready() -> void:
 		ball.ball_freed.connect(_on_ball_freed)
 		ball.custom_mouse_entered.connect(_on_ball_mouse_entered)
 	
+	# TEMP - testing offscreen balls
+	balls[0].global_position.x -= 50
+	balls[1].global_position.y -= 50
+	balls[2].global_position.y += 50
+	
 	set_wind()
 	hide_settings()
-
-
-#func _draw() -> void:
-	#draw_line_global(Vector2.ZERO, Vector2(250, 250), Color.RED, 5)
-	#update_trajectory()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -69,7 +69,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if currently_shooting:
-		active_ball_position.global_position = active_ball.global_position
+		projection_line.global_position = active_ball.global_position
 		
 		var mouse_pos = get_viewport().get_mouse_position()
 		var screen_margin = 30
@@ -129,8 +129,6 @@ func _physics_process(delta: float) -> void:
 	if wind:
 		for ball:Ball in balls:
 			ball.apply_central_force(wind_dir * 200)
-	
-	## Check here if any balls have been knocked off (through) the table
 
 
 func within(a: float, b: float, t: float = 0.025) -> bool:
@@ -146,12 +144,12 @@ func show_power() -> void:
 	var power = active_ball.get_shot_power()
 	var color: Color
 	
-	active_ball_position.show_trajectory = true
+	projection_line.show_trajectory = true
 	power_label.text = str(int(power))
 	if power < 20:
 		# 0 strength shot (cancel): Gray
 		power_label.text = "0"
-		active_ball_position.show_trajectory = false
+		projection_line.show_trajectory = false
 		color = Color.DIM_GRAY
 	elif power < 440:
 		# Low strength shot: Green(0,1,0) -> Yellow(1,1,0)
@@ -211,7 +209,7 @@ func hide_settings() -> void:
 func _on_ball_activate(ball) -> void:
 	active_ball = ball
 	currently_shooting = true
-	active_ball_position.show_trajectory = true
+	projection_line.show_trajectory = true
 	cam_scale_before = camera.scale.x
 	target_scale = camera.scale.x
 
@@ -219,7 +217,7 @@ func _on_ball_activate(ball) -> void:
 func _on_ball_deactivate() -> void:
 	active_ball = null
 	currently_shooting = false
-	active_ball_position.show_trajectory = false
+	projection_line.show_trajectory = false
 	target_scale = cam_scale_before
 	power_label.hide()
 
@@ -242,7 +240,15 @@ func _on_ball_freed(ball: Ball) -> void:
 
 func _on_table_sleeping_state_changed() -> void:
 	#print('table sleep changed to ', table.sleeping)
-	if table.sleeping and not currently_shooting:
+	if not table.sleeping:
+		return
+	
+	#for ball in balls:
+		#if not ball.sinking and ball.is_off_table(table.global_position):
+			#print(ball, ' offtable @ ', ball.global_position)
+			#ball.sink(ball.global_position)
+	
+	if not currently_shooting:
 		target_pos = table.position
 		target_rot = table.rotation
 		target_scale = 1.0

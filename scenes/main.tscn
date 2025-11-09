@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://vorwg5dx554u"]
+[gd_scene load_steps=17 format=3 uid="uid://vorwg5dx554u"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0up62"]
 [ext_resource type="PackedScene" uid="uid://dudvkl4ve2be8" path="res://scenes/table.tscn" id="1_52dv5"]
@@ -9,12 +9,16 @@
 [ext_resource type="AudioStream" uid="uid://cuvenngacpvuo" path="res://assets/sounds/8bit Bossa.mp3" id="5_ocblr"]
 [ext_resource type="StyleBox" uid="uid://djmjeekcjugos" path="res://assets/ui_style_box.tres" id="7_w4exi"]
 [ext_resource type="Texture2D" uid="uid://bniw8v5fpwsap" path="res://assets/sprites/gear.png" id="8_fyssj"]
-[ext_resource type="Script" path="res://scenes/active_ball_position.gd" id="10_0xumc"]
+[ext_resource type="Script" path="res://scripts/projection_line.gd" id="10_0xumc"]
+[ext_resource type="Texture2D" uid="uid://dhq1lpi6a6sot" path="res://assets/sprites/cue_ball.png" id="11_31lty"]
 [ext_resource type="Shape2D" uid="uid://bx3ihooh5gg54" path="res://assets/ball_shape.tres" id="11_v6wwf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yu7u0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_atnu6"]
+
+[sub_resource type="Gradient" id="Gradient_jhv56"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="SphereMesh" id="SphereMesh_uds4d"]
 radius = 10.15
@@ -273,18 +277,52 @@ polygon = PackedVector2Array(-576, -324, 576, -324, 576, 324, -576, 324)
 stream = ExtResource("5_ocblr")
 bus = &"Music"
 
-[node name="ActiveBallPosition" type="Marker2D" parent="."]
+[node name="ProjectionLine" type="Node2D" parent="."]
 script = ExtResource("10_0xumc")
 
-[node name="TestProjectile" type="CharacterBody2D" parent="ActiveBallPosition"]
+[node name="ProjectionBall" type="Sprite2D" parent="ProjectionLine"]
+visible = false
+self_modulate = Color(1, 1, 1, 0.27451)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("11_31lty")
+
+[node name="EdgePivot" type="Node2D" parent="ProjectionLine/ProjectionBall"]
+
+[node name="Edge" type="Marker2D" parent="ProjectionLine/ProjectionBall/EdgePivot"]
+position = Vector2(42, 0)
+
+[node name="ProjectionBall2" type="Sprite2D" parent="ProjectionLine"]
+visible = false
+self_modulate = Color(1, 1, 1, 0.27451)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("11_31lty")
+
+[node name="EdgePivot" type="Node2D" parent="ProjectionLine/ProjectionBall2"]
+
+[node name="Edge" type="Marker2D" parent="ProjectionLine/ProjectionBall2/EdgePivot"]
+position = Vector2(42, 0)
+
+[node name="FirstLine" type="Line2D" parent="ProjectionLine"]
+width = 4.0
+joint_mode = 2
+begin_cap_mode = 2
+
+[node name="SecondLine" type="Line2D" parent="ProjectionLine"]
+width = 4.0
+gradient = SubResource("Gradient_jhv56")
+joint_mode = 2
+begin_cap_mode = 2
+
+[node name="TestProjectile" type="CharacterBody2D" parent="ProjectionLine"]
 collision_layer = 4
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="ActiveBallPosition/TestProjectile"]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="ProjectionLine/TestProjectile"]
+visible = false
 self_modulate = Color(1, 0, 1, 1)
 position = Vector2(0, -9.53674e-07)
 mesh = SubResource("SphereMesh_uds4d")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ActiveBallPosition/TestProjectile"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProjectionLine/TestProjectile"]
 shape = ExtResource("11_v6wwf")
 
 [connection signal="gui_input" from="Camera2D/UI" to="." method="_on_ui_gui_input"]
