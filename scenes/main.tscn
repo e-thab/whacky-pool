@@ -281,8 +281,8 @@ bus = &"Music"
 script = ExtResource("10_0xumc")
 
 [node name="ProjectionBall" type="Sprite2D" parent="ProjectionLine"]
-visible = false
-self_modulate = Color(1, 1, 1, 0.27451)
+self_modulate = Color(0.533333, 0.784314, 0.568627, 1)
+z_index = 1
 scale = Vector2(0.235, 0.235)
 texture = ExtResource("11_31lty")
 

@@ -127,7 +127,8 @@ func position_line() -> void:
 			1,
 			0
 		)
-		shot_strength_multiplier = 0.85
+		#shot_strength_multiplier = 0.85
+		shot_strength_multiplier = 1
 	elif length < 840:
 		# Low-medium strength: Yellow(1,1,0) -> Orange(1,.5,0)
 		color = Color(
@@ -143,11 +144,13 @@ func position_line() -> void:
 			0.5 - (length - 840) / ((1239-840) * 2),
 			0
 		)
-		shot_strength_multiplier = 1.25
+		#shot_strength_multiplier = 1.25
+		shot_strength_multiplier = 1
 	else:
 		# High strength: Red
 		color = Color.RED
-		shot_strength_multiplier = 1.5
+		#shot_strength_multiplier = 1.5
+		shot_strength_multiplier = 1
 	
 	line.self_modulate = color
 	highlight.self_modulate = color
